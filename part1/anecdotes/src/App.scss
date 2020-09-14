@@ -1,0 +1,108 @@
+.App {
+  border: 15px double Black;
+  border-radius: 20px;
+  width: 98.5%;
+  height: 98vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #f5a635;
+  & h1 {
+    font-family: "Roboto";
+    font-size: 40px;
+    font-weight: 900;
+  }
+  & .showAnecdote {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    // border: solid;
+    width: 100%;
+    height: 30%;
+    & .text {
+      font-family: "Permanent Marker";
+      font-size: 25px;
+      border-radius: 25px;
+      padding: 15px 5px 15px 5px;
+      text-align: center;
+      border: 1px solid Black;
+      width: 50%;
+      height: 40%;
+    }
+    & p {
+      font-family: "Roboto";
+      font-size: 20px;
+    }
+  }
+  & .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 5%;
+    width: 100%;
+    // border: solid;
+    & .vote {
+      outline: none;
+      border: 2px solid black;
+      background-color: #18658f;
+      margin-right: 10px;
+      height: 100%;
+      width: 10%;
+      border-radius: 10px;
+      font-family: "Roboto";
+      font-size: 18px;
+      font-weight: 900;
+    }
+    & .vote:hover {
+      -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+      -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+      box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    }
+    & .anecdote {
+      outline: none;
+      border: 2px solid black;
+      background-color: #18658f;
+      height: 100%;
+      width: 20%;
+      border-radius: 10px;
+      font-family: "Roboto";
+      font-size: 18px;
+      font-weight: 900;
+    }
+    & .anecdote:hover {
+      -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+      -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+      box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    }
+  }
+  & .mostVote {
+    // border: solid;
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    & h2 {
+      font-family: Roboto;
+      font-size: 30px;
+    }
+    & .text2 {
+      font-family: "Permanent Marker";
+      font-size: 20px;
+      border-radius: 25px;
+      padding: 15px 5px 15px 5px;
+      text-align: center;
+      border: 1px solid Black;
+      width: 50%;
+      height: 40%;
+    }
+    & p {
+      font-family: "Roboto";
+      font-size: 20px;
+    }
+  }
+}
