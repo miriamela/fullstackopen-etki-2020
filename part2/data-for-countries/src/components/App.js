@@ -7,7 +7,7 @@ import ShowResults from "./ShowResults";
 function App() {
   const [input, setInput] = useState("");
   const [countries, setCountries] = useState([]);
-  const [capital, setCapital] = useState([]);
+  const [capital, setCapital] = useState("");
 
   const handleInput = (event) => {
     const input = event.target.value;
@@ -26,6 +26,7 @@ function App() {
     country.name.toLowerCase().includes(input.toLowerCase())
   );
   console.log(filteredElements);
+  console.log(Array.isArray(filteredElements));
 
   if (filteredElements.length === 1) {
     setCapital(filteredElements[0].capital);
