@@ -6,7 +6,7 @@ function ShowResults({ input, weather, filteredElements, moreInfoClick }) {
   console.log(weather);
   console.log(Array.isArray(weather));
   if (input === "") {
-    return <p></p>;
+    return null;
   } else {
     if (filteredElements.length > 10) {
       return <p className="text">Too many matches, specify another filter.</p>;
