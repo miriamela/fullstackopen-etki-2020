@@ -13,6 +13,7 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
   const [message, setMessage] = useState(null);
 
+  // style message
   const infoStyleGreen = {
     color: "green",
     fontStyle: "italic",
@@ -33,19 +34,20 @@ function App() {
     padding: 10,
     marginBottom: 10,
   };
+  // setting timer for message
   const settingTime = () => {
     setTimeout(() => {
       setMessage(null);
     }, 3000);
   };
-
+  // getting data from server
   useEffect(() => {
     personsService
       .getAll()
       .then((initialPersons) => setPersons(initialPersons));
   }, []);
 
-  // handleClick de toda la vida, se activa con el click, aunque esté en el form
+  // handleClick "add"
   const addName = (event) => {
     event.preventDefault();
     const newContact = persons.filter(
@@ -100,8 +102,7 @@ function App() {
     setNewNumber("");
   };
 
-  // console.log(persons);
-  // handleChange, recoge lo que se escribe en el input y lo repasa como valor de new name
+  // handleChange for name and number
   const handleName = (event) => {
     const entryName = event.target.value;
     SetNewName(entryName);
@@ -124,7 +125,6 @@ function App() {
   const handleClick = (event) => {
     const name = event.currentTarget.name;
     const deletedContact = persons.filter((person) => person.name === name);
-    // console.log(deletedContact[0].id);
     const confirmationDelete = window.confirm(`Delete ${name}?`);
     if (confirmationDelete) {
       personsService.deleteUser(deletedContact[0].id).then(() => {
