@@ -2,11 +2,9 @@ import React from "react";
 
 function Form({ handleChange }) {
   return (
-    <form>
-      <label>
-        find countries:
-        <input type="text" onChange={handleChange} />
-      </label>
+    <form className="form">
+      <label>FIND COUNTRIES:</label>
+      <input type="text" onChange={handleChange} />
     </form>
   );
 }

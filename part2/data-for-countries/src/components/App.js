@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../App.css";
+import "../App.scss";
 import From from "./Form";
 import ShowResults from "./ShowResults";
 
 function App() {
   const [input, setInput] = useState("");
   const [countries, setCountries] = useState([]);
-  const [capital, setCapital] = useState("");
+  const [weather, setWeather] = useState([]);
+
+  const api_key = process.env.REACT_APP_API_KEY;
 
   const handleInput = (event) => {
     const input = event.target.value;
@@ -28,20 +30,22 @@ function App() {
   console.log(filteredElements);
   console.log(Array.isArray(filteredElements));
 
-  if (filteredElements.length === 1) {
-    setCapital(filteredElements[0].capital);
-  }
+  const capital =
+    Array.isArray(filteredElements) && filteredElements.length > 0
+      ? filteredElements[0].capital
+      : null;
   console.log(capital);
 
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       `http://api.weatherstack.com/current?access_key=0e8c0a203e29232e7fc7bef13cc16e31&query=New York`
-  //     )
-  //     .then((response) => {
-  //       setWeather(response.data);
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(
+        `http://api.weatherstack.com/current?access_key=${api_key}&query=${capital}`
+      )
+      .then((response) => {
+        setWeather(response.data);
+      });
+  }, [capital, api_key]);
+  console.log(weather);
 
   const moreInfoClick = (event) => {
     const moreInfo = event.currentTarget.id;
@@ -53,6 +57,7 @@ function App() {
     <div className="App">
       <From handleChange={handleInput}></From>
       <ShowResults
+        weather={weather}
         input={input}
         filteredElements={filteredElements}
         moreInfoClick={moreInfoClick}

@@ -1,11 +1,14 @@
 import React from "react";
 
-function Numbers(props) {
+function Numbers({ contact, handleClick }) {
   return (
     <ul>
-      {props.persons.map((person, i) => (
-        <li key={i}>
-          {person.name} {person.number}
+      {contact.map((person, id) => (
+        <li key={id}>
+          {person.name} {person.number} {""}
+          <button name={person.name} type="button" onClick={handleClick}>
+            Delete
+          </button>
         </li>
       ))}
     </ul>

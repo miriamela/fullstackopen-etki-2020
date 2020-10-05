@@ -1,57 +1,149 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import personsService from "../services/Persons";
 import "../App.css";
 import Filter from "./Filter";
 import Form from "./Form";
 import Numbers from "./Numbers";
+import Notification from "./Notification";
 
 function App() {
-  const [persons, setPerson] = useState([]);
-  const [newName, SetName] = useState("");
-  const [newNumber, setNumber] = useState("");
+  const [persons, setPersons] = useState([]);
+  const [newName, SetNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [message, setMessage] = useState(null);
+
+  const infoStyleGreen = {
+    color: "green",
+    fontStyle: "italic",
+    fontSize: 20,
+    background: "lightGrey",
+    borderStyle: "solid",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  };
+  const infoStyleRed = {
+    color: "red",
+    fontStyle: "italic",
+    fontSize: 20,
+    background: "lightGrey",
+    borderStyle: "solid",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  };
+  const settingTime = () => {
+    setTimeout(() => {
+      setMessage(null);
+    }, 3000);
+  };
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPerson(response.data);
-    });
+    personsService
+      .getAll()
+      .then((initialPersons) => setPersons(initialPersons));
   }, []);
 
   // handleClick de toda la vida, se activa con el click, aunque esté en el form
   const addName = (event) => {
     event.preventDefault();
-    for (let i = 0; i < persons.length; i++) {
-      if (newName !== persons[i].name) {
-        setPerson(persons.concat({ name: newName, number: newNumber }));
-      } else {
-        alert(`${newName} is already added to phonebook `);
+    const newContact = persons.filter(
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
+    );
+    if (newContact.length === 0) {
+      const contact = {
+        name: newName,
+        number: newNumber,
+      };
+      // console.log(contact);
+      personsService.create(contact).then((returnPersons) => {
+        setPersons(persons.concat(returnPersons));
+        setMessage({
+          text: `Added ${contact.name} contact`,
+          textStyle: infoStyleGreen,
+        });
+        settingTime();
+      });
+    } else {
+      const confirmationAdd = window.confirm(
+        `${newName} is already in your phonebook, do you want to replace the old number with a new one?`
+      );
+      if (confirmationAdd) {
+        const person = persons.find((person) => person.id === newContact[0].id);
+        const changedPerson = { ...person, number: newNumber };
+        personsService
+          .changeContact(newContact[0].id, changedPerson)
+          .then((changedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== newContact[0].id ? person : changedPerson
+              )
+            );
+            setMessage({
+              text: `${changedPerson.name.toUpperCase()}'s contact has been successfully changed`,
+              textStyle: infoStyleGreen,
+            });
+
+            settingTime();
+          })
+          .catch((error) => {
+            setMessage({
+              text: `Information of ${newName} has already been removed from the server`,
+              textStyle: infoStyleRed,
+            });
+            settingTime();
+          });
       }
     }
-    SetName("");
-    setNumber("");
+    SetNewName("");
+    setNewNumber("");
   };
+
+  // console.log(persons);
   // handleChange, recoge lo que se escribe en el input y lo repasa como valor de new name
   const handleName = (event) => {
     const entryName = event.target.value;
-    SetName(entryName);
+    SetNewName(entryName);
   };
   const handleNumber = (event) => {
     const entryNumber = event.target.value;
-    setNumber(entryNumber);
+    setNewNumber(entryNumber);
   };
   // search logic
   const handleChange = (event) => {
     const search = event.target.value;
     setSearchInput(search);
-    console.log("estas buscando", searchInput);
   };
   const contact = persons.filter((person) =>
     person.name.toUpperCase().includes(searchInput.toUpperCase())
   );
-  console.log(contact);
+  // console.log(contact);
+  // console.log(Array.isArray(contact));
+  // delete button with confirmation
+  const handleClick = (event) => {
+    const name = event.currentTarget.name;
+    const deletedContact = persons.filter((person) => person.name === name);
+    // console.log(deletedContact[0].id);
+    const confirmationDelete = window.confirm(`Delete ${name}?`);
+    if (confirmationDelete) {
+      personsService.deleteUser(deletedContact[0].id).then(() => {
+        setPersons(
+          persons.filter((deleted) => deleted.id !== deletedContact[0].id)
+        );
+        setMessage({
+          text: `${name.toUpperCase()} has been successfully deleted`,
+          textStyle: infoStyleGreen,
+        });
+        settingTime();
+      });
+    }
+  };
+
   return (
     <div className="App">
       <h1>Phonebook</h1>
+      <Notification message={message}></Notification>
       <Filter searchInput={searchInput} handleChange={handleChange}></Filter>
       <h2>Add a new:</h2>
       <Form
@@ -62,7 +154,7 @@ function App() {
         handleNumber={handleNumber}
       ></Form>
       <h2>Numbers</h2>
-      <Numbers persons={persons}></Numbers>
+      <Numbers contact={contact} handleClick={handleClick}></Numbers>
     </div>
   );
 }
