@@ -5,7 +5,6 @@ const cors = require("cors");
 //this is just a logging method, instead of a long list of console.log, this gives you some info related with the request made to the server.
 const app = express();
 app.use(express.json());
-app.use(express.static("build"));
 app.use(cors());
 
 let persons = [
