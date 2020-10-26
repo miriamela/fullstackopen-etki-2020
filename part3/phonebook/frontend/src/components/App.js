@@ -59,14 +59,23 @@ function App() {
         number: newNumber,
       };
       // console.log(contact);
-      personsService.create(contact).then((returnPersons) => {
-        setPersons(persons.concat(returnPersons));
-        setMessage({
-          text: `Added ${contact.name} contact`,
-          textStyle: infoStyleGreen,
+      personsService
+        .create(contact)
+        .then((returnPersons) => {
+          setPersons(persons.concat(returnPersons));
+          setMessage({
+            text: `Added ${contact.name} contact`,
+            textStyle: infoStyleGreen,
+          });
+          settingTime();
+        })
+        .catch((error) => {
+          setMessage({
+            text: `${error.response.data.error}`,
+            textStyle: infoStyleRed,
+          });
+          settingTime();
         });
-        settingTime();
-      });
     } else {
       const confirmationAdd = window.confirm(
         `${newName} is already in your phonebook, do you want to replace the old number with a new one?`
@@ -86,7 +95,6 @@ function App() {
               text: `${changedPerson.name.toUpperCase()}'s contact has been successfully changed`,
               textStyle: infoStyleGreen,
             });
-
             settingTime();
           })
           .catch((error) => {
