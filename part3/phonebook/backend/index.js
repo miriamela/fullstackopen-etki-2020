@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 const Person = require("./models/person");
-const { request } = require("express");
+
 //this is just a logging method, instead of a long list of console.log, this gives you some info related with the request made to the server.
 const app = express();
 app.use(express.static("build"));
