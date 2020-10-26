@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 const url = process.env.MONGODB_URI;
-// const url = `mongodb+srv://fullstack:miriam_grossi20@cluster0.vuuo6.mongodb.net/phonebook?retryWrites=true&w=majority`;
 console.log("connecting to", url);
 
 mongoose

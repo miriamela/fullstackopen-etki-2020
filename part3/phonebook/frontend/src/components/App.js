@@ -46,7 +46,6 @@ function App() {
       .getAll()
       .then((initialPersons) => setPersons(initialPersons));
   }, []);
-
   // handleClick "add"
   const addName = (event) => {
     event.preventDefault();
@@ -58,7 +57,6 @@ function App() {
         name: newName,
         number: newNumber,
       };
-      // console.log(contact);
       personsService
         .create(contact)
         .then((returnPersons) => {
@@ -109,7 +107,6 @@ function App() {
     SetNewName("");
     setNewNumber("");
   };
-
   // handleChange for name and number
   const handleName = (event) => {
     const entryName = event.target.value;
@@ -127,8 +124,6 @@ function App() {
   const contact = persons.filter((person) =>
     person.name.toUpperCase().includes(searchInput.toUpperCase())
   );
-  // console.log(contact);
-  // console.log(Array.isArray(contact));
   // delete button with confirmation
   const handleClick = (event) => {
     const name = event.currentTarget.name;
