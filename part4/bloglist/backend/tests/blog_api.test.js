@@ -21,7 +21,7 @@ test("there are 11 notes and they are json", async () => {
 
 test("blogs have id property", async () => {
   const response = await api
-    .get("./api/blogs")
+    .get("/api/blogs")
     .expect(200)
     .expect("Content-Type", /application\/json/);
   expect(response.body[0].id).toBeDefined();
