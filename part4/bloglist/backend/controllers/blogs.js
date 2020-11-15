@@ -36,5 +36,27 @@ blogsRouter.post("/", async (request, response) => {
   console.log(`${blog.title} has been saved!`);
   response.status(201).json(savedBlog);
 });
+blogsRouter.delete("/:id", async (request, response) => {
+  const blog = await Blog.findByIdAndRemove(request.params.id);
+  console.log(`${blog.title} has been deleted`);
+  response.status(204).end();
+});
+blogsRouter.put("/:id", async (request, response) => {
+  const body = request.body;
+  const newLikes = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+  };
 
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    request.params.id,
+    newLikes,
+    {
+      new: true,
+    }
+  );
+  response.json(updatedBlog.toJSON());
+});
 module.exports = blogsRouter;
