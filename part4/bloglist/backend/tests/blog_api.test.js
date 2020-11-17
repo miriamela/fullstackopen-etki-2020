@@ -3,6 +3,8 @@ const supertest = require("supertest");
 const helper = require("./test_helper");
 const app = require("../app");
 const api = supertest(app);
+const bcrypt = require("bcrypt");
+const User = require("../models/user");
 const Blog = require("../models/blog");
 
 beforeEach(async () => {
@@ -14,6 +16,7 @@ beforeEach(async () => {
   await Promise.all(blogs);
   console.log("saved");
 });
+
 console.log("done");
 describe("checking blogs api", () => {
   test("blogs are returned as json", async () => {
@@ -100,7 +103,43 @@ describe("interactions with api", () => {
     expect(titles).not.toContain(blogToDelete.title);
   });
 });
+describe("when there is initially one user in db", () => {
+  beforeEach(async () => {
+    await User.deleteMany({});
 
+    const passwordHash = await bcrypt.hash("sekret", 10);
+    const user = new User({ username: "root", passwordHash });
+
+    await user.save();
+  });
+  test("creation succeeds with a fresh username", async () => {
+    const usersAtStart = await helper.usersInDB();
+
+    const newUser = {
+      username: "mluukkai",
+      name: "Matti Luukkainen",
+      password: "salainen",
+    };
+
+    await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+
+    const usersAtEnd = await helper.usersInDB();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1);
+
+    const usernames = usersAtEnd.map((u) => u.username);
+    expect(usernames).toContain(newUser.username);
+  });
+  test("return 404 if username or password length are not 3 characters long", async () => {
+    await api
+      .post("/api/users")
+      .send({ username: "Mi", password: "Si", name: "Testing error" })
+      .expect(404);
+  });
+});
 afterAll(() => {
   mongoose.connection.close();
 });
