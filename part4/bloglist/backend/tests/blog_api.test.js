@@ -46,7 +46,30 @@ describe("checking blogs api", () => {
   });
 });
 
+// second block, testing blogs api functionalities THIS IS NOT WORKING
 describe("interactions with api", () => {
+  let loggedInToken = "";
+  beforeEach(async () => {
+    await User.deleteMany({});
+    const passwordHash = await bcrypt.hash("password", 10);
+    const user = new User({
+      username: "Chiara",
+      name: "Chiara Manzoni",
+      passwordHash,
+    });
+    await user.save();
+
+    const response = await api
+      .post("/api/login")
+      .send({
+        username: "Chiara",
+        name: "Chiara Manzoni",
+        password: "password",
+      })
+      .expect(200);
+
+    loggedInToken = response.body.token;
+  });
   test("a new blog post can be added", async () => {
     const newBlog = {
       title: "Avoiding Memory Leaks With CanJS",
@@ -57,6 +80,7 @@ describe("interactions with api", () => {
     };
     const response = await api
       .post("/api/blogs")
+      .set("Authorization", `bearer ${loggedInToken}`)
       .send(newBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
@@ -74,6 +98,7 @@ describe("interactions with api", () => {
   test("if likes is missing default to 0", async () => {
     const response = await api
       .post("/api/blogs")
+      .set("Authorization", `bearer ${loggedInToken}`)
       .send({
         title: "Blog without likes",
         author: "Miriam Grossi",
@@ -87,6 +112,7 @@ describe("interactions with api", () => {
   test("if missing title or url return 404", async () => {
     await api
       .post("/api/blogs")
+      .set("Authorization", `bearer ${loggedInToken}`)
       .send({ author: "Miriam Grossi", likes: 3 })
       .expect(404);
   });
@@ -94,7 +120,10 @@ describe("interactions with api", () => {
     const blogsAtBeginning = await helper.blogsInDB();
     const blogToDelete = blogsAtBeginning[0];
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set("Authorization", `bearer ${loggedInToken}`)
+      .expect(204);
 
     const blogsAtEnd = await helper.blogsInDB();
     expect(blogsAtEnd).toHaveLength(blogsAtBeginning.length - 1);
@@ -103,12 +132,18 @@ describe("interactions with api", () => {
     expect(titles).not.toContain(blogToDelete.title);
   });
 });
+
+// third block, user creation, testing interaction with users api THIS IS WORKING
 describe("when there is initially one user in db", () => {
   beforeEach(async () => {
     await User.deleteMany({});
 
     const passwordHash = await bcrypt.hash("sekret", 10);
-    const user = new User({ username: "root", passwordHash });
+    const user = new User({
+      username: "miriamgrossi",
+      name: "Miriam Grossi",
+      passwordHash,
+    });
 
     await user.save();
   });
@@ -140,6 +175,7 @@ describe("when there is initially one user in db", () => {
       .expect(404);
   });
 });
+
 afterAll(() => {
   mongoose.connection.close();
 });

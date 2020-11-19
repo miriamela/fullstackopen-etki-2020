@@ -27,7 +27,7 @@ const connection = async () => {
   }
 };
 connection();
-app.use(middleware.tokenExtractor);
+// app.use(middleware.tokenExtractor);
 app.use(cors());
 // app.use(express.static("build"))
 app.use(express.json());
