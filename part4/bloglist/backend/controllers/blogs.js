@@ -41,6 +41,10 @@ blogsRouter.post("/", async (request, response) => {
     likes: body.likes || 0,
     user: user._id,
   });
+
+  if (!(body.title || body.url)) {
+    return response.status(404).json({ error: "missing title or url" });
+  }
   const savedBlog = await blog.save();
   console.log(`${blog.title} has been saved!`);
   user.blogs = user.blogs.concat(savedBlog._id);
@@ -57,8 +61,9 @@ blogsRouter.delete("/:id", async (request, response) => {
 
   const blog = await Blog.findById(request.params.id);
   const user = await User.findById(decodedToken.id);
+  console.log(user, blog);
   if (blog.user.toString() === user.id.toString()) {
-    await Blog.findByIdAndRemove(request.params.id);
+    await Blog.findByIdAndRemove(blog);
     console.log(`${blog.title} has been deleted`);
     response.status(204).end();
   } else {

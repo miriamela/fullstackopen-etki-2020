@@ -95,6 +95,25 @@ describe("interactions with api", () => {
     expect(author).toContain(newOne.author);
     expect(newOne.likes).toBeDefined();
   });
+  // THIS IS NOT WORKING
+  test("not adding a blog without a valid token", async () => {
+    const blogsAtBeginning = await helper.blogsInDB();
+    const newBlog = {
+      title: "Avoiding Memory Leaks With CanJS",
+      author: "Sebastian",
+      url:
+        "http://sporto.github.io/blog/2014/03/20/avoiding-memory-leaks-with-canjs/",
+      likes: 7,
+    };
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(401)
+      .expect("Content-Type", /application\/json/);
+    const blogAtEnd = await helper.blogsInDB();
+    expect(blogAtEnd).toHaveLength(blogsAtBeginning.length);
+  });
+  // THIS IS WORKING
   test("if likes is missing default to 0", async () => {
     const response = await api
       .post("/api/blogs")
@@ -116,6 +135,7 @@ describe("interactions with api", () => {
       .send({ author: "Miriam Grossi", likes: 3 })
       .expect(404);
   });
+  // THIS IS NOT WORKING
   test("delete blog when id is valid", async () => {
     const blogsAtBeginning = await helper.blogsInDB();
     const blogToDelete = blogsAtBeginning[0];
