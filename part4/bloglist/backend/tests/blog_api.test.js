@@ -47,6 +47,7 @@ describe("checking blogs api", () => {
 });
 
 // second block, testing blogs api functionalities THIS IS NOT WORKING
+
 describe("interactions with api", () => {
   let loggedInToken = "";
   beforeEach(async () => {
@@ -135,13 +136,27 @@ describe("interactions with api", () => {
       .send({ author: "Miriam Grossi", likes: 3 })
       .expect(404);
   });
-  // THIS IS NOT WORKING
+  // This is now working
   test("delete blog when id is valid", async () => {
+    const response = await api
+      .post("/api/blogs")
+      .set("Authorization", `bearer ${loggedInToken}`)
+      .send({
+        title: "I am really unimpressed",
+        author: "Miriam Grossi",
+        likes: 3,
+        url: "bidibibodibibu",
+      })
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+
+    const blogToDelete = response.body.id;
+
     const blogsAtBeginning = await helper.blogsInDB();
-    const blogToDelete = blogsAtBeginning[0];
+    // const blogToDelete = blogsAtBeginning[0];
 
     await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
+      .delete(`/api/blogs/${blogToDelete}`)
       .set("Authorization", `bearer ${loggedInToken}`)
       .expect(204);
 

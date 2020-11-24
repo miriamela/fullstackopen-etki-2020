@@ -62,9 +62,17 @@ const usersInDB = async () => {
   const users = await User.find({});
   return users.map((user) => user.toJSON());
 };
+// const nonExistingId = async () => {
+//   const blog = new Blog({ title: "This is a test blog", author: "whatever" });
+//   await blog.save();
+//   await blog.remove();
+
+//   return blog._id.toString();
+// };
 
 module.exports = {
   initialBlogs,
   blogsInDB,
   usersInDB,
+  // nonExistingId,
 };
