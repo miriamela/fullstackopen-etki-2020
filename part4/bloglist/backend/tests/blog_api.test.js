@@ -45,9 +45,6 @@ describe("checking blogs api", () => {
     }
   });
 });
-
-// second block, testing blogs api functionalities THIS IS NOT WORKING
-
 describe("interactions with api", () => {
   let loggedInToken = "";
   beforeEach(async () => {
@@ -96,7 +93,7 @@ describe("interactions with api", () => {
     expect(author).toContain(newOne.author);
     expect(newOne.likes).toBeDefined();
   });
-  // THIS IS NOT WORKING
+
   test("not adding a blog without a valid token", async () => {
     const blogsAtBeginning = await helper.blogsInDB();
     const newBlog = {
@@ -114,7 +111,7 @@ describe("interactions with api", () => {
     const blogAtEnd = await helper.blogsInDB();
     expect(blogAtEnd).toHaveLength(blogsAtBeginning.length);
   });
-  // THIS IS WORKING
+
   test("if likes is missing default to 0", async () => {
     const response = await api
       .post("/api/blogs")
@@ -153,7 +150,6 @@ describe("interactions with api", () => {
     const blogToDelete = response.body.id;
 
     const blogsAtBeginning = await helper.blogsInDB();
-    // const blogToDelete = blogsAtBeginning[0];
 
     await api
       .delete(`/api/blogs/${blogToDelete}`)
@@ -168,7 +164,6 @@ describe("interactions with api", () => {
   });
 });
 
-// third block, user creation, testing interaction with users api THIS IS WORKING
 describe("when there is initially one user in db", () => {
   beforeEach(async () => {
     await User.deleteMany({});
