@@ -9,6 +9,7 @@ const LoggedinPage = ({
   createNewBlog,
   blogs,
   blogFormRef,
+  updateBlog,
 }) => {
   return (
     <>
@@ -21,7 +22,14 @@ const LoggedinPage = ({
       </Togglable>
       <div className="allBlogs">
         {blogs.map((blog) => {
-          return <Blog key={blog.id} blog={blog} user={user.name} />;
+          return (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              user={user.name}
+              updateBlog={updateBlog}
+            />
+          );
         })}
       </div>
     </>

@@ -77,6 +77,20 @@ const App = () => {
       console.log(error);
     }
   };
+  // logic updating likes
+  const updateBlog = async (id) => {
+    const blog = blogs.find((each) => each.id === id);
+    const updatedBlog = { ...blog, likes: blog.likes + 1 };
+    console.log(updatedBlog);
+    try {
+      const newBlog = await blogService.updateLikes(updatedBlog);
+      const newBlogs = blogs.map((blog) => (blog.id !== id ? blog : newBlog));
+      setBlogs(newBlogs);
+      setMessage(`${newBlog.title}: likes has been updated`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="App">
@@ -97,6 +111,7 @@ const App = () => {
           handleLogout={handleLogout}
           createNewBlog={addBlog}
           blogs={blogs}
+          updateBlog={updateBlog}
         ></LoggedinPage>
       )}
     </div>

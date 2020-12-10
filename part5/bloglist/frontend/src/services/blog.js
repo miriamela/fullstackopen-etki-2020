@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const baseUrl = "http://localhost:3003/api/blogs";
+console.log(baseUrl);
 
 let token = null;
 
@@ -21,9 +22,17 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
+const updateLikes = async (id, newObject) => {
+  const newUrl = `${baseUrl}/${id}`;
+  console.log(newUrl);
+  const response = await axios.put(newUrl, newObject);
+  return response.data;
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getAll: getAll,
   setToken: setToken,
   create: create,
+  updateLikes: updateLikes,
 };

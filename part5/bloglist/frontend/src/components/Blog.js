@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, user, updateBlog }) => {
   const [visible, setVisible] = useState(false);
   const [buttonText, setButtonText] = useState("view");
-
   const showDetails = { display: visible ? "" : "none", listStyle: "none" };
   const blogStyle = {
     border: "2px solid black",
@@ -21,6 +20,14 @@ const Blog = ({ blog, user }) => {
       setButtonText("view");
     }
   };
+  const increaseLikes = (event) => {
+    event.preventDefault();
+    console.log("click");
+
+    updateBlog(blog.id);
+    console.log(typeof blog.id);
+  };
+
   return (
     <section style={blogStyle}>
       <div>
@@ -33,12 +40,7 @@ const Blog = ({ blog, user }) => {
         <p>{blog.url}</p>
         <p>
           likes {blog.likes}{" "}
-          <button
-            type="button"
-            onClick={() => {
-              console.log("click");
-            }}
-          >
+          <button type="button" onClick={increaseLikes}>
             like
           </button>
         </p>
