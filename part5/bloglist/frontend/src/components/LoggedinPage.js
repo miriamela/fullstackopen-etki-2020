@@ -10,6 +10,7 @@ const LoggedinPage = ({
   blogs,
   blogFormRef,
   updateBlog,
+  deleteBlog,
 }) => {
   return (
     <>
@@ -21,16 +22,21 @@ const LoggedinPage = ({
         <BlogForm createNewBlog={createNewBlog} />
       </Togglable>
       <div className="allBlogs">
-        {blogs.map((blog) => {
-          return (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              user={user.name}
-              updateBlog={updateBlog}
-            />
-          );
-        })}
+        {blogs
+          .sort((a, b) => {
+            return a.likes - b.likes;
+          })
+          .map((blog) => {
+            return (
+              <Blog
+                key={blog.id}
+                blog={blog}
+                user={user.name}
+                updateBlog={updateBlog}
+                deleteBlog={deleteBlog}
+              />
+            );
+          })}
       </div>
     </>
   );

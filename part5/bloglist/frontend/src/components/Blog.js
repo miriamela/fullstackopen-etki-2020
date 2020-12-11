@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Blog = ({ blog, user, updateBlog }) => {
+const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   const [visible, setVisible] = useState(false);
   const [buttonText, setButtonText] = useState("view");
   const showDetails = { display: visible ? "" : "none", listStyle: "none" };
@@ -11,6 +11,7 @@ const Blog = ({ blog, user, updateBlog }) => {
     borderWidth: 1,
     marginBottom: 5,
   };
+  console.log(blog);
 
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -22,10 +23,11 @@ const Blog = ({ blog, user, updateBlog }) => {
   };
   const increaseLikes = (event) => {
     event.preventDefault();
-    console.log("click");
-
     updateBlog(blog.id);
-    console.log(typeof blog.id);
+  };
+  const removeBlog = (event) => {
+    event.preventDefault();
+    deleteBlog(blog.id);
   };
 
   return (
@@ -45,6 +47,9 @@ const Blog = ({ blog, user, updateBlog }) => {
           </button>
         </p>
         <p>{user}</p>
+        <button type="button" onClick={removeBlog}>
+          remove
+        </button>
       </section>
     </section>
   );

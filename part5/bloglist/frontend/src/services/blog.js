@@ -28,6 +28,13 @@ const updateLikes = async (id, newObject) => {
   const response = await axios.put(newUrl, newObject);
   return response.data;
 };
+const remove = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const newUrl = `${baseUrl}/${id}`;
+  return axios.delete(newUrl, config);
+};
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -35,4 +42,5 @@ export default {
   setToken: setToken,
   create: create,
   updateLikes: updateLikes,
+  remove: remove,
 };

@@ -5,7 +5,6 @@ import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import LoggedinPage from "./components/LoggedinPage";
 import "./App.css";
-// import blog from "./services/blog";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -46,22 +45,25 @@ const App = () => {
       setMessage("Wrong Credentials");
       setTimeout(() => {
         setMessage(null);
-      }, 5000);
+      }, 3000);
     }
   };
-  console.log(message);
-  // console.log(user, Array.isArray(user));
+
+  // username and password
   const handleUsername = (event) => {
     setUsername(event.target.value);
   };
   const handlePassword = (event) => {
     setPassword(event.target.value);
   };
+
+  // logic logout
   const handleLogout = () => {
     window.localStorage.removeItem("loggedBlogUser");
     // set user to null is the only thing it is needed since it will trigger the rendering if (user === null)
     setUser(null);
   };
+
   // logic new blog
   const addBlog = async (newObject) => {
     try {
@@ -72,21 +74,46 @@ const App = () => {
       setBlogs(newBlogs);
       setTimeout(() => {
         setMessage(null);
-      }, 5000);
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
   };
+
   // logic updating likes
   const updateBlog = async (id) => {
     const blog = blogs.find((each) => each.id === id);
     const updatedBlog = { ...blog, likes: blog.likes + 1 };
     console.log(updatedBlog);
     try {
-      const newBlog = await blogService.updateLikes(updatedBlog);
+      const newBlog = await blogService.updateLikes(id, updatedBlog);
       const newBlogs = blogs.map((blog) => (blog.id !== id ? blog : newBlog));
       setBlogs(newBlogs);
       setMessage(`${newBlog.title}: likes has been updated`);
+      setTimeout(() => {
+        setMessage(null);
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // logic delete blog
+  const deleteBlog = async (id) => {
+    const blog = blogs.find((each) => each.id === id);
+    try {
+      const confirmation = window.confirm(
+        `Remove ${blog.title} by ${blog.author}`
+      );
+      if (confirmation) {
+        await blogService.remove(id);
+        const newBlogs = blogs.filter((each) => each.id !== id);
+        setBlogs(newBlogs);
+        setMessage(`${blog.title} by ${blog.author} has been removed`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 3000);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -112,6 +139,7 @@ const App = () => {
           createNewBlog={addBlog}
           blogs={blogs}
           updateBlog={updateBlog}
+          deleteBlog={deleteBlog}
         ></LoggedinPage>
       )}
     </div>
