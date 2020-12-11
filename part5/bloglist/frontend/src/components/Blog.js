@@ -12,6 +12,22 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     marginBottom: 5,
   };
 
+  const showUser = () => {
+    if (blog.user) {
+      if (blog.user.name === user) {
+        return (
+          <div>
+            <p>{blog.user.name}</p>
+            <button type="button" onClick={removeBlog}>
+              remove
+            </button>
+          </div>
+        );
+      } else {
+        return <p>{blog.user.name}</p>;
+      }
+    }
+  };
   const toggleVisibility = () => {
     setVisible(!visible);
     if (buttonText === "view") {
@@ -45,10 +61,7 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
             like
           </button>
         </p>
-        <p>{user}</p>
-        <button type="button" onClick={removeBlog}>
-          remove
-        </button>
+        {showUser()}
       </section>
     </section>
   );

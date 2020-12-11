@@ -83,7 +83,7 @@ const App = () => {
   const updateBlog = async (id) => {
     const blog = blogs.find((each) => each.id === id);
     const updatedBlog = { ...blog, likes: blog.likes + 1 };
-    console.log(updatedBlog);
+    // console.log(updatedBlog);
     try {
       const newBlog = await blogService.updateLikes(id, updatedBlog);
       const newBlogs = blogs.map((blog) => (blog.id !== id ? blog : newBlog));

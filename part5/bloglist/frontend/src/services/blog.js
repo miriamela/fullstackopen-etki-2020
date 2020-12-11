@@ -23,7 +23,6 @@ const getAll = () => {
 
 const updateLikes = async (id, newObject) => {
   const newUrl = `${baseUrl}/${id}`;
-  console.log(newUrl);
   const response = await axios.put(newUrl, newObject);
   return response.data;
 };
