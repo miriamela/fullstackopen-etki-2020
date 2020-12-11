@@ -11,7 +11,6 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5,
   };
-  console.log(blog);
 
   const toggleVisibility = () => {
     setVisible(!visible);
