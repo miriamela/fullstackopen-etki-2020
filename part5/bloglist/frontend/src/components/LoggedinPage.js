@@ -2,6 +2,7 @@ import React from "react";
 import Blog from "./Blog";
 import BlogForm from "./BlogForm";
 import Togglable from "./Togglable";
+import PropTypes from "prop-types";
 
 const LoggedinPage = ({
   user,
@@ -42,3 +43,12 @@ const LoggedinPage = ({
   );
 };
 export default LoggedinPage;
+LoggedinPage.propTypes = {
+  user: PropTypes.object.isRequired,
+  handleLogout: PropTypes.func.isRequired,
+  createNewBlog: PropTypes.func.isRequired,
+  blogs: PropTypes.array.isRequired,
+  blogFormRef: PropTypes.object.isRequired,
+  updateBlog: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+};
