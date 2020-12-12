@@ -5,6 +5,7 @@ module.exports = {
     "jest/globals": true,
   },
   extends: ["eslint:recommended", "plugin:react/recommended"],
+  extends: ["plugin:prettier/recommended"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -29,5 +30,16 @@ module.exports = {
     react: {
       version: "detect",
     },
+  },
+  plugins: ["prettier"],
+  rules: {
+    "prettier/prettier": [
+      "error",
+      {
+        singleQuote: true,
+        trailingComma: "all",
+        arrowParens: "always",
+      },
+    ],
   },
 };
