@@ -48,7 +48,7 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
 
   return (
     <section style={blogStyle}>
-      <div>
+      <div className="blog">
         {blog.title}, {blog.author} {""}
         <button type="button" onClick={toggleVisibility}>
           {buttonText}
@@ -73,5 +73,5 @@ Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.string.isRequired,
   updateBlog: PropTypes.func.isRequired,
-  deleteBlog: PropTypes.func.isRequired,
+  // deleteBlog: PropTypes.func.isRequired,
 };

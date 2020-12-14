@@ -2,7 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es6: true,
-    "jest/globals": true,
+    jest: true,
   },
   extends: ["eslint:recommended", "plugin:react/recommended"],
   extends: ["plugin:prettier/recommended"],
@@ -36,7 +36,7 @@ module.exports = {
     "prettier/prettier": [
       "error",
       {
-        singleQuote: true,
+        singleQuote: false,
         trailingComma: "all",
         arrowParens: "always",
       },

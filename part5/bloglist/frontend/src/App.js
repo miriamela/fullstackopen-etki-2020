@@ -102,7 +102,7 @@ const App = () => {
     const blog = blogs.find((each) => each.id === id);
     try {
       const confirmation = window.confirm(
-        `Remove ${blog.title} by ${blog.author}`
+        `Remove ${blog.title} by ${blog.author}`,
       );
       if (confirmation) {
         await blogService.remove(id);

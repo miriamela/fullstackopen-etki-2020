@@ -33,7 +33,7 @@ const remove = async (id) => {
   const newUrl = `${baseUrl}/${id}`;
   return axios.delete(newUrl, config);
 };
-
+// eslint-disable-next-line
 export default {
   getAll: getAll,
   setToken: setToken,
