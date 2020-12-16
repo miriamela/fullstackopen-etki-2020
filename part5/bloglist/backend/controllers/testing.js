@@ -8,4 +8,4 @@ router.post("/reset", async (request, response) => {
   response.status(204).end();
 });
 
-module.export = router;
+module.exports = router;
