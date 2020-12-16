@@ -31,7 +31,9 @@ const LoginForm = ({
         ></input>
       </label>
       {/* since the function to handle the submit in on form, no need to add the onClick for the button!! */}
-      <button type="submit">Login</button>
+      <button id="loginButton" type="submit">
+        Login
+      </button>
     </form>
   );
 };

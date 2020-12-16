@@ -4,6 +4,6 @@ const Notification = ({ message }) => {
   if (message === null) {
     return null;
   }
-  return <div>{message}</div>;
+  return <div id="message">{message}</div>;
 };
 export default Notification;

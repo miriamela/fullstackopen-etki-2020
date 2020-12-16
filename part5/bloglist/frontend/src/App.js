@@ -44,7 +44,7 @@ const App = () => {
       setMessage("Wrong Credentials");
       setTimeout(() => {
         setMessage(null);
-      }, 3000);
+      }, 5000);
     }
   };
 
@@ -73,7 +73,7 @@ const App = () => {
       setBlogs(newBlogs);
       setTimeout(() => {
         setMessage(null);
-      }, 3000);
+      }, 5000);
     } catch (error) {
       console.log(error);
     }
@@ -102,7 +102,8 @@ const App = () => {
     const blog = blogs.find((each) => each.id === id);
     try {
       const confirmation = window.confirm(
-        `Remove ${blog.title} by ${blog.author}`,
+        // eslint-disable-next-line prettier/prettier
+        `Remove ${blog.title} by ${blog.author}`
       );
       if (confirmation) {
         await blogService.remove(id);
