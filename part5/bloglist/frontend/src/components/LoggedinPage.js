@@ -25,7 +25,7 @@ const LoggedinPage = ({
       <div className="allBlogs">
         {blogs
           .sort((a, b) => {
-            return a.likes - b.likes;
+            return b.likes - a.likes;
           })
           .map((blog) => {
             return (

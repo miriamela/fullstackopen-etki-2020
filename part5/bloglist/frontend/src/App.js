@@ -28,6 +28,7 @@ const App = () => {
       setUser(user);
     }
   }, []);
+  console.log(user);
 
   // handle login function
   const handleLogin = async (event) => {
@@ -36,7 +37,7 @@ const App = () => {
       const user = await loginService.login({ username, password });
 
       window.localStorage.setItem("loggedBlogUser", JSON.stringify(user));
-      blogService.setToken(user.token);
+      // blogService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
@@ -67,6 +68,7 @@ const App = () => {
   const addBlog = async (newObject) => {
     try {
       blogFormRef.current.toggleVisibility();
+      blogService.setToken(user.token);
       const newBlogObject = await blogService.create(newObject);
       const newBlogs = blogs.concat(newBlogObject);
       setMessage(`new blog ${newBlogObject.title} has been added`);
@@ -106,6 +108,7 @@ const App = () => {
         `Remove ${blog.title} by ${blog.author}`
       );
       if (confirmation) {
+        blogService.setToken(user.token);
         await blogService.remove(id);
         const newBlogs = blogs.filter((each) => each.id !== id);
         setBlogs(newBlogs);

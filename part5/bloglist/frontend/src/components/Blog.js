@@ -50,15 +50,15 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     <section style={blogStyle}>
       <div className="blog">
         {blog.title}, {blog.author} {""}
-        <button type="button" onClick={toggleVisibility}>
+        <button id="showHide" type="button" onClick={toggleVisibility}>
           {buttonText}
         </button>
       </div>
       <section className="details" style={showDetails}>
         <p>{blog.url}</p>
         <p>
-          likes {blog.likes}{" "}
-          <button type="button" onClick={increaseLikes}>
+          likes <span className="likeNumber">{blog.likes}</span>{" "}
+          <button id="buttonLikes" type="button" onClick={increaseLikes}>
             like
           </button>
         </p>
