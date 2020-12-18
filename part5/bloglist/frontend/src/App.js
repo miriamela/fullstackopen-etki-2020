@@ -28,7 +28,6 @@ const App = () => {
       setUser(user);
     }
   }, []);
-  console.log(user);
 
   // handle login function
   const handleLogin = async (event) => {
