@@ -1,23 +1,42 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addingLike } from "../reducers/anecdoteReducer";
+import { showNotification } from "../reducers/notificationReducer";
+import { hideNotification } from "../reducers/notificationReducer";
 
 const AnecdoteList = () => {
-  let anecdotes = useSelector((state) => state);
-  anecdotes = anecdotes.sort((a, b) => b.votes - a.votes);
+  let anecdotes = useSelector((state) => state.anecdotes);
+  let filter = useSelector((state) => state.filter);
+  let anecdotesToShow;
+  if (filter === "") {
+    anecdotesToShow = anecdotes;
+  } else {
+    let filteredAnecdotes = anecdotes.filter((anecdote) => {
+      return anecdote.content.toLowerCase().includes(filter);
+    });
+    anecdotesToShow = filteredAnecdotes;
+  }
+
+  console.log(anecdotesToShow);
+  anecdotesToShow = anecdotesToShow.sort((a, b) => b.votes - a.votes);
   const dispatch = useDispatch();
 
-  const vote = (id) => {
+  const vote = (id, anecdote) => {
     dispatch(addingLike(id));
+    dispatch(showNotification(`you liked: "${anecdote}"`));
+    setTimeout(() => {
+      dispatch(hideNotification());
+    }, 5000);
   };
+
   return (
     <section>
-      {anecdotes.map((anecdote) => (
-        <div key={anecdote.id}>
-          <div>{anecdote.content}</div>
+      {anecdotesToShow.map((each) => (
+        <div key={each.id}>
+          <div>{each.content}</div>
           <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            has {each.votes}
+            <button onClick={() => vote(each.id, each.content)}>vote</button>
           </div>
         </div>
       ))}
