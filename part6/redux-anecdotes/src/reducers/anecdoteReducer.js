@@ -1,16 +1,12 @@
+import anecdotesService from "../services/anecdotes";
+
 const reducer = (state = [], action) => {
   console.log("state now: ", state);
   console.log("action", action);
   switch (action.type) {
     case "INCREASING_LIKE":
       const id = action.data.id;
-      const anecdoteToChange = state.find((each) => each.id === id);
-      console.log(anecdoteToChange);
-      const changedAnecdote = {
-        ...anecdoteToChange,
-        votes: anecdoteToChange.votes + 1,
-      };
-      console.log(changedAnecdote);
+      const changedAnecdote = action.data;
       return state.map((anecdote) =>
         anecdote.id !== id ? anecdote : changedAnecdote
       );
@@ -25,24 +21,43 @@ const reducer = (state = [], action) => {
   }
 };
 
-export const initializingAnecdotes = (anecdotes) => {
-  return {
-    type: "INIT_ANECDOTES",
-    data: anecdotes,
+export const initializingAnecdotes = () => {
+  return async (dispatch) => {
+    const anecdotes = await anecdotesService.getAll();
+    dispatch({
+      type: "INIT_ANECDOTES",
+      data: anecdotes,
+    });
   };
 };
+export const addingLike = (id, anecdotes) => {
+  return async (dispatch) => {
+    const anecdoteToChange = anecdotes.find((each) => each.id === id);
+    console.log(anecdoteToChange);
+    const changedAnecdote = {
+      ...anecdoteToChange,
+      votes: anecdoteToChange.votes + 1,
+    };
+    console.log(changedAnecdote);
 
-export const addingLike = (id) => {
-  return {
-    type: "INCREASING_LIKE",
-    data: { id },
+    const updatedAnecdote = await anecdotesService.increaseLike(
+      id,
+      changedAnecdote
+    );
+    dispatch({
+      type: "INCREASING_LIKE",
+      data: updatedAnecdote,
+    });
   };
 };
 
 export const addingAnecdote = (content) => {
-  return {
-    type: "CREATE_ANECDOTE",
-    data: content,
+  return async (dispatch) => {
+    const newAnecdote = await anecdotesService.addNewAnecdote(content);
+    dispatch({
+      type: "CREATE_ANECDOTE",
+      data: newAnecdote,
+    });
   };
 };
 

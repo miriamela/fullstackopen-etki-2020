@@ -10,15 +10,18 @@ const reducer = (state = "", action) => {
   }
 };
 
-export const hideNotification = () => {
-  return {
-    type: "HIDE",
+export const showNotification = (text, time) => {
+  return async (dispatch) => {
+    await dispatch({
+      type: "SHOW",
+      data: text,
+    });
+    setTimeout(() => {
+      dispatch({
+        type: "HIDE",
+      });
+    }, time * 1000);
   };
 };
-export const showNotification = (text) => {
-  return {
-    type: "SHOW",
-    data: text,
-  };
-};
+
 export default reducer;

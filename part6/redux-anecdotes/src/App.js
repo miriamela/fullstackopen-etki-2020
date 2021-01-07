@@ -4,16 +4,13 @@ import AnecdoteList from "./components/AnecdoteList";
 import Notification from "./components/Notification";
 import { initializingAnecdotes } from "./reducers/anecdoteReducer";
 import { useDispatch } from "react-redux";
-import anecdotesService from "./services/anecdotes";
 import Filter from "./components/Filter";
 const App = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    anecdotesService
-      .getAll()
-      .then((data) => dispatch(initializingAnecdotes(data)));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    dispatch(initializingAnecdotes());
+  }, [dispatch]);
 
   return (
     <div>

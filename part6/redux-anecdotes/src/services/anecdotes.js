@@ -12,5 +12,9 @@ const addNewAnecdote = async (content) => {
   const response = await axios.post(baseURL, object);
   return response.data;
 };
-
-export default { getAll, addNewAnecdote };
+const increaseLike = async (id, modifiedAnecdote) => {
+  const newURL = `${baseURL}/${id}`;
+  const response = await axios.put(newURL, modifiedAnecdote);
+  return response.data;
+};
+export default { getAll, addNewAnecdote, increaseLike };

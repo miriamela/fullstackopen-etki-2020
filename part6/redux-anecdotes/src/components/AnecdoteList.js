@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addingLike } from "../reducers/anecdoteReducer";
 import { showNotification } from "../reducers/notificationReducer";
-import { hideNotification } from "../reducers/notificationReducer";
+// import { hideNotification } from "../reducers/notificationReducer";
 
 const AnecdoteList = () => {
   let anecdotes = useSelector((state) => state.anecdotes);
@@ -22,11 +22,8 @@ const AnecdoteList = () => {
   const dispatch = useDispatch();
 
   const vote = (id, anecdote) => {
-    dispatch(addingLike(id));
-    dispatch(showNotification(`you liked: "${anecdote}"`));
-    setTimeout(() => {
-      dispatch(hideNotification());
-    }, 5000);
+    dispatch(addingLike(id, anecdotesToShow));
+    dispatch(showNotification(`you liked: "${anecdote}"`, 5));
   };
   console.log(anecdotesToShow);
 
