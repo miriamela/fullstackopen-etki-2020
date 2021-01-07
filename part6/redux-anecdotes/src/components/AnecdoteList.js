@@ -28,6 +28,7 @@ const AnecdoteList = () => {
       dispatch(hideNotification());
     }, 5000);
   };
+  console.log(anecdotesToShow);
 
   return (
     <section>

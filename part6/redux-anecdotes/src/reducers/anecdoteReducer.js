@@ -39,13 +39,10 @@ export const addingLike = (id) => {
   };
 };
 
-export const addingAnecdote = (anecdote) => {
+export const addingAnecdote = (content) => {
   return {
     type: "CREATE_ANECDOTE",
-    data: {
-      content: anecdote,
-      votes: 0,
-    },
+    data: content,
   };
 };
 
