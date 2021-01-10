@@ -1,31 +1,15 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import { addingLike } from "../reducers/anecdoteReducer";
 import { showNotification } from "../reducers/notificationReducer";
-// import { hideNotification } from "../reducers/notificationReducer";
 
-const AnecdoteList = () => {
-  let anecdotes = useSelector((state) => state.anecdotes);
-  let filter = useSelector((state) => state.filter);
-  let anecdotesToShow;
-  if (filter === "") {
-    anecdotesToShow = anecdotes;
-  } else {
-    let filteredAnecdotes = anecdotes.filter((anecdote) => {
-      return anecdote.content.toLowerCase().includes(filter);
-    });
-    anecdotesToShow = filteredAnecdotes;
-  }
-
-  console.log(anecdotesToShow);
-  anecdotesToShow = anecdotesToShow.sort((a, b) => b.votes - a.votes);
-  const dispatch = useDispatch();
+const AnecdoteList = (props) => {
+  let anecdotesToShow = props.anecdotes.sort((a, b) => b.votes - a.votes);
 
   const vote = (id, anecdote) => {
-    dispatch(addingLike(id, anecdotesToShow));
-    dispatch(showNotification(`you liked: "${anecdote}"`, 5));
+    props.addingLike(id, anecdotesToShow);
+    props.showNotification(`you liked: "${anecdote}"`, 5);
   };
-  console.log(anecdotesToShow);
 
   return (
     <section>
@@ -41,5 +25,25 @@ const AnecdoteList = () => {
     </section>
   );
 };
-
-export default AnecdoteList;
+const mapStateToProps = (state) => {
+  if (state.filter === "") {
+    return {
+      anecdotes: state.anecdotes,
+    };
+  } else {
+    return {
+      anecdotes: state.anecdotes.filter((anecdote) => {
+        return anecdote.content.toLowerCase().includes(state.filter);
+      }),
+    };
+  }
+};
+const mapDispatchToProps = {
+  addingLike,
+  showNotification,
+};
+const ConnectedAnecdoteList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnecdoteList);
+export default ConnectedAnecdoteList;

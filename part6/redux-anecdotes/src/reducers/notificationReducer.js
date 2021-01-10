@@ -9,14 +9,17 @@ const reducer = (state = "", action) => {
       return state;
   }
 };
-
+let timeoutID;
 export const showNotification = (text, time) => {
   return async (dispatch) => {
+    if (timeoutID) {
+      window.clearTimeout(timeoutID);
+    }
     await dispatch({
       type: "SHOW",
       data: text,
     });
-    setTimeout(() => {
+    timeoutID = setTimeout(() => {
       dispatch({
         type: "HIDE",
       });
