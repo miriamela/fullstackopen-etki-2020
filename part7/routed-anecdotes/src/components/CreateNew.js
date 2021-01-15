@@ -1,20 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
+import { useFields } from "../hooks";
 
 const CreateNew = ({ addNew }) => {
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  // FUNCTION NORESET CAN CREATE AN OBJECT WITHOUT THE RESET FUNCTION
+  // const noReset = ({ reset, ...rest }) => rest;
+  // const content = noReset(useFields("text"));
+  const content = useFields("text");
+  const author = useFields("text");
+  const info = useFields("text");
   const history = useHistory();
   const handleSubmit = (e) => {
     e.preventDefault();
     addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     });
     history.push("/");
+  };
+  const resetAll = (e) => {
+    e.preventDefault();
+    const empty = { target: { value: "" } };
+    content.onChange(empty);
+    author.onChange(empty);
+    info.onChange(empty);
   };
 
   return (
@@ -23,29 +34,20 @@ const CreateNew = ({ addNew }) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <input {...content} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          <input {...info} />
         </div>
         <button>create</button>
+        <button type="reset" onClick={resetAll}>
+          reset
+        </button>
       </form>
     </div>
   );
