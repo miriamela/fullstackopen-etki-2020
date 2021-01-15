@@ -1,0 +1,37 @@
+{
+  "notes": [
+    {
+      "content": "custom-hookit aivan mahtavia",
+      "id": 1
+    },
+    {
+      "content": "paras feature ikinä <3",
+      "id": 2
+    },
+    {
+      "content": "Testing creation",
+      "id": 3
+    },
+    {
+      "content": "Testing creation 1",
+      "id": 4
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "Miriam Grossi",
+      "number": "345-0875846",
+      "id": 2
+    },
+    {
+      "name": "Alberto Marti",
+      "number": "235845-204857",
+      "id": 3
+    }
+  ]
+}
