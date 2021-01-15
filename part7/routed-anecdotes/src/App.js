@@ -61,7 +61,7 @@ const App = () => {
       <Notifications notification={notification} />
       <Switch>
         <Route path="/anecdotes/:id">
-          <Anecdote anecdotes={anecdotes} anecdote={anecdote} />
+          <Anecdote anecdote={anecdote} vote={vote} />
         </Route>
         <Route path="/about">
           <About />

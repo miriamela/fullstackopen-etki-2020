@@ -1,13 +1,25 @@
 import React from "react";
 // import { useParams } from "react-router-dom";
 
-const Anecdote = ({ anecdotes, anecdote }) => {
+const Anecdote = ({ anecdote, vote }) => {
   // const id = useParams().id;
   // let anecdote = anecdotes.find((a) => a.id === id);
+  console.log(anecdote);
+  const handleClick = (e) => {
+    e.preventDefault();
+    const id = e.target.id;
+    vote(id);
+  };
   return (
     <div>
       <h2>{anecdote.content}</h2>
-      <p>has 0 votes</p>
+      <p>has {anecdote.votes} votes</p>
+      <button id={anecdote.id} onClick={handleClick}>
+        vote
+      </button>
+      <p>
+        For more info: <a href={anecdote.info}>{anecdote.info}</a>
+      </p>
     </div>
   );
 };
