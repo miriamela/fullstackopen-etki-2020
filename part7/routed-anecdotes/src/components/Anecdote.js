@@ -4,7 +4,6 @@ import React from "react";
 const Anecdote = ({ anecdote, vote }) => {
   // const id = useParams().id;
   // let anecdote = anecdotes.find((a) => a.id === id);
-  console.log(anecdote);
   const handleClick = (e) => {
     e.preventDefault();
     const id = e.target.id;
