@@ -3,7 +3,7 @@ import blogService from "../services/blog";
 import { showNotification } from "./notificationsReducers";
 
 const blogsReducer = (state = [], action) => {
-  console.log(action, state);
+  // console.log(action, state);
   switch (action.type) {
     case "CREATE_BLOG":
       const newBlog = action.data;
@@ -23,6 +23,16 @@ const blogsReducer = (state = [], action) => {
   }
 };
 
+export const initializeBlogs = () => {
+  return async (dispatch) => {
+    const blogs = await blogService.getAll();
+    dispatch({
+      type: "RETRIEVE_ALL",
+      data: blogs,
+    });
+  };
+};
+
 export const createBlog = (content) => {
   return async (dispatch) => {
     const newObject = await blogService.create(content);
@@ -32,6 +42,31 @@ export const createBlog = (content) => {
     });
     dispatch(
       showNotification(`a new blog ${newObject.title} has been added`, 5)
+    );
+  };
+};
+
+export const deleteBlog = (id, blog) => {
+  return async (dispatch) => {
+    await blogService.remove(id);
+    await dispatch({
+      type: "DELETE_BLOG",
+      data: id,
+    });
+    dispatch(
+      showNotification(`${blog.title} by ${blog.author} has been removed`, 5)
+    );
+  };
+};
+export const updateLikes = (id, blog) => {
+  return async (dispatch) => {
+    const updatedBlog = await blogService.updateLikes(id, blog);
+    await dispatch({
+      type: "INCREASE_LIKES",
+      data: updatedBlog,
+    });
+    dispatch(
+      showNotification(`${updatedBlog.title}: likes has been updated`, 5)
     );
   };
 };

@@ -5,15 +5,7 @@ import Togglable from "./Togglable";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
-const LoggedinPage = ({
-  user,
-  handleLogout,
-  createNewBlog,
-  // blogs,
-  blogFormRef,
-  updateBlog,
-  deleteBlog,
-}) => {
+const LoggedinPage = ({ user, handleLogout, blogFormRef }) => {
   const blogs = useSelector((state) => state.blogs);
   return (
     <>
@@ -22,11 +14,7 @@ const LoggedinPage = ({
         Logout
       </button>
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm
-          createNewBlog={createNewBlog}
-          blogFormRef={blogFormRef}
-          user={user}
-        />
+        <BlogForm blogFormRef={blogFormRef} user={user} />
       </Togglable>
       <div className="allBlogs">
         {blogs
@@ -34,15 +22,7 @@ const LoggedinPage = ({
             return b.likes - a.likes;
           })
           .map((blog) => {
-            return (
-              <Blog
-                key={blog.id}
-                blog={blog}
-                user={user.name}
-                updateBlog={updateBlog}
-                deleteBlog={deleteBlog}
-              />
-            );
+            return <Blog key={blog.id} blog={blog} user={user} />;
           })}
       </div>
     </>
@@ -52,9 +32,5 @@ export default LoggedinPage;
 LoggedinPage.propTypes = {
   user: PropTypes.object.isRequired,
   handleLogout: PropTypes.func.isRequired,
-  // createNewBlog: PropTypes.func.isRequired,
-  // blogs: PropTypes.array.isRequired,
   blogFormRef: PropTypes.object.isRequired,
-  updateBlog: PropTypes.func.isRequired,
-  deleteBlog: PropTypes.func.isRequired,
 };

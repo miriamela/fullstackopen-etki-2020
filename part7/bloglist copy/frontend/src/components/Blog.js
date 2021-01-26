@@ -1,9 +1,15 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import blogService from "../services/blog";
+import { useDispatch } from "react-redux";
+import { deleteBlog } from "../reducers/blogsReducer";
+import { updateLikes } from "../reducers/blogsReducer";
 
-const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
+const Blog = ({ blog, user }) => {
   const [visible, setVisible] = useState(false);
   const [buttonText, setButtonText] = useState("view");
+  const dispatch = useDispatch();
   const showDetails = { display: visible ? "" : "none", listStyle: "none" };
   const blogStyle = {
     border: "2px solid black",
@@ -15,7 +21,7 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
 
   const showUser = () => {
     if (blog.user) {
-      if (blog.user.name === user) {
+      if (blog.user.name === user.name) {
         return (
           <div>
             <p>{blog.user.name}</p>
@@ -39,11 +45,26 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   };
   const increaseLikes = (event) => {
     event.preventDefault();
-    updateBlog(blog.id);
+    try {
+      const updatedBlog = { ...blog, likes: blog.likes + 1 };
+      dispatch(updateLikes(blog.id, updatedBlog));
+    } catch (error) {
+      console.log(error);
+    }
   };
   const removeBlog = (event) => {
     event.preventDefault();
-    deleteBlog(blog.id);
+    try {
+      const confirmation = window.confirm(
+        `Remove ${blog.title} by ${blog.author}`
+      );
+      if (confirmation) {
+        blogService.setToken(user.token);
+        dispatch(deleteBlog(blog.id, blog));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -71,7 +92,4 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
 export default Blog;
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  user: PropTypes.string.isRequired,
-  updateBlog: PropTypes.func.isRequired,
-  // deleteBlog: PropTypes.func.isRequired,
 };

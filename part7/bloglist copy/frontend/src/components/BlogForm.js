@@ -2,7 +2,7 @@
 import React from "react";
 import blogService from "../services/blog";
 import { useDispatch } from "react-redux";
-import createBlog from "../reducers/blogsReducer";
+import { createBlog } from "../reducers/blogsReducer";
 
 const BlogForm = ({ blogFormRef, user }) => {
   const dispatch = useDispatch();

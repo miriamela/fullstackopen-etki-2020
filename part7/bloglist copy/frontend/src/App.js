@@ -7,10 +7,9 @@ import LoginForm from "./components/LoginForm";
 import LoggedinPage from "./components/LoggedinPage";
 import "./App.css";
 import { useDispatch } from "react-redux";
+import { initializeBlogs } from "./reducers/blogsReducer";
 
 const App = () => {
-  // const [blogs, setBlogs] = useState([]);
-  // const [message, setMessage] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -20,17 +19,8 @@ const App = () => {
 
   // fetching all blogs
   useEffect(() => {
-    const setInitialBlogs = async () => {
-      const blogs = await blogService.getAll();
-      console.log(blogs);
-      dispatch({
-        type: "RETRIEVE_ALL",
-        data: blogs,
-      });
-    };
-    setInitialBlogs();
-    // blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+    dispatch(initializeBlogs());
+  }, [dispatch]);
 
   // local storage fetching with useEffect
   useEffect(() => {
@@ -48,7 +38,6 @@ const App = () => {
       const user = await loginService.login({ username, password });
 
       window.localStorage.setItem("loggedBlogUser", JSON.stringify(user));
-      // blogService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
@@ -72,64 +61,6 @@ const App = () => {
     setUser(null);
   };
 
-  // logic new blog
-  // const addBlog = async (newObject) => {
-  //   try {
-  //     blogFormRef.current.toggleVisibility();
-  //     blogService.setToken(user.token);
-  //     const newBlogObject = await blogService.create(newObject);
-  //     dispatch({
-  //       type: "CREATE_BLOG",
-  //       data: newBlogObject,
-  //     });
-  //     // const newBlogs = blogs.concat(newBlogObject);
-  //     dispatch(
-  //       showNotification(`new blog ${newBlogObject.title} has been added`, 5)
-  //     );
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // logic updating likes
-  const updateBlog = async (id) => {
-    const blog = blogs.find((each) => each.id === id);
-    const updatedBlog = { ...blog, likes: blog.likes + 1 };
-    // console.log(updatedBlog);
-    try {
-      const newBlog = await blogService.updateLikes(id, updatedBlog);
-      const newBlogs = blogs.map((blog) => (blog.id !== id ? blog : newBlog));
-      setBlogs(newBlogs);
-      dispatch(showNotification(`${newBlog.title}: likes has been updated`, 5));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // logic delete blog
-  const deleteBlog = async (id) => {
-    const blog = blogs.find((each) => each.id === id);
-    try {
-      const confirmation = window.confirm(
-        `Remove ${blog.title} by ${blog.author}`
-      );
-      if (confirmation) {
-        blogService.setToken(user.token);
-        await blogService.remove(id);
-        const newBlogs = blogs.filter((each) => each.id !== id);
-        setBlogs(newBlogs);
-        dispatch(
-          showNotification(
-            `${blog.title} by ${blog.author} has been removed`,
-            5
-          )
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div className="App">
       <h2>Blogs</h2>
@@ -147,8 +78,6 @@ const App = () => {
           user={user}
           blogFormRef={blogFormRef}
           handleLogout={handleLogout}
-          updateBlog={updateBlog}
-          deleteBlog={deleteBlog}
         ></LoggedinPage>
       )}
     </div>
