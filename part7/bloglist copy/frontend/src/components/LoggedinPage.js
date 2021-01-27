@@ -4,9 +4,17 @@ import BlogForm from "./BlogForm";
 import Togglable from "./Togglable";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { userLogOut } from "../reducers/userReducer";
 
-const LoggedinPage = ({ user, handleLogout, blogFormRef }) => {
+const LoggedinPage = ({ user, blogFormRef }) => {
   const blogs = useSelector((state) => state.blogs);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    window.localStorage.removeItem("loggedBlogUser");
+    dispatch(userLogOut());
+  };
   return (
     <>
       <h3 className="userLoggedIn">{user.name} logged in</h3>
@@ -29,8 +37,8 @@ const LoggedinPage = ({ user, handleLogout, blogFormRef }) => {
   );
 };
 export default LoggedinPage;
-LoggedinPage.propTypes = {
-  user: PropTypes.object.isRequired,
-  handleLogout: PropTypes.func.isRequired,
-  blogFormRef: PropTypes.object.isRequired,
-};
+// LoggedinPage.propTypes = {
+//   user: PropTypes.object.isRequired,
+//   handleLogout: PropTypes.func.isRequired,
+//   blogFormRef: PropTypes.object.isRequired,
+// };
