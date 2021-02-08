@@ -7,11 +7,17 @@ import "./App.css";
 import { useDispatch } from "react-redux";
 import { initializeBlogs } from "./reducers/blogsReducer";
 import { useSelector } from "react-redux";
-const App = () => {
-  const user = useSelector((state) => state.user);
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import User from "./components/User";
+import Users from "./components/Users";
+import IndividualUser from "./components/IndividualUser";
+import SingleBlog from "./components/SingleBlog";
+import NavBar from "./components/NavBar";
 
+const App = () => {
   const blogFormRef = useRef();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   // fetching all blogs
   useEffect(() => {
@@ -31,15 +37,32 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div className="App">
-      <h2>Blogs</h2>
-      <Notification />
-      {user === null ? (
-        <LoginForm></LoginForm>
-      ) : (
-        <LoggedinPage user={user} blogFormRef={blogFormRef}></LoggedinPage>
-      )}
-    </div>
+    <Router>
+      <div className="App">
+        <Notification />
+        {user === null ? (
+          <LoginForm />
+        ) : (
+          <>
+            <NavBar />
+            <Switch>
+              <Route path="/blogs/:id">
+                <SingleBlog />
+              </Route>
+              <Route path="/users/:id">
+                <IndividualUser />
+              </Route>
+              <Route path="/users">
+                <Users />
+              </Route>
+              <Route path="/">
+                <LoggedinPage blogFormRef={blogFormRef} />
+              </Route>
+            </Switch>
+          </>
+        )}
+      </div>
+    </Router>
   );
 };
 

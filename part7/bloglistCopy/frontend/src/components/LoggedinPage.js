@@ -4,25 +4,15 @@ import BlogForm from "./BlogForm";
 import Togglable from "./Togglable";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { userLogOut } from "../reducers/userReducer";
 
 const LoggedinPage = ({ user, blogFormRef }) => {
   const blogs = useSelector((state) => state.blogs);
-  const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    window.localStorage.removeItem("loggedBlogUser");
-    dispatch(userLogOut());
-  };
   return (
     <>
-      <h3 className="userLoggedIn">{user.name} logged in</h3>
-      <button className="logout" type="button" onClick={handleLogout}>
-        Logout
-      </button>
+      <h2>Blog App</h2>
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm blogFormRef={blogFormRef} user={user} />
+        <BlogForm blogFormRef={blogFormRef} />
       </Togglable>
       <div className="allBlogs">
         {blogs
@@ -30,7 +20,7 @@ const LoggedinPage = ({ user, blogFormRef }) => {
             return b.likes - a.likes;
           })
           .map((blog) => {
-            return <Blog key={blog.id} blog={blog} user={user} />;
+            return <Blog key={blog.id} blog={blog} />;
           })}
       </div>
     </>

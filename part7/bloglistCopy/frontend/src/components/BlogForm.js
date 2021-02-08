@@ -1,11 +1,12 @@
 /* eslint-disable prettier/prettier */
 import React from "react";
 import blogService from "../services/blog";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createBlog } from "../reducers/blogsReducer";
 
-const BlogForm = ({ blogFormRef, user }) => {
+const BlogForm = ({ blogFormRef }) => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const displayBlock = { display: "block" };
   const addBlog = async (event) => {
     event.preventDefault();
@@ -21,6 +22,9 @@ const BlogForm = ({ blogFormRef, user }) => {
       blogFormRef.current.toggleVisibility();
       blogService.setToken(user.token);
       dispatch(createBlog(newObject));
+      // this reload is because of the issue saving the blog with the user id number but not loading immediately
+      // the user information, without it the user name iis not immediately showed along with the delete button...
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
