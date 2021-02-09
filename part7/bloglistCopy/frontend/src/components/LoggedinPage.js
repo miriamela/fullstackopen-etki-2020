@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 const LoggedinPage = ({ user, blogFormRef }) => {
   const blogs = useSelector((state) => state.blogs);
+  console.log(blogs);
 
   return (
     <>
