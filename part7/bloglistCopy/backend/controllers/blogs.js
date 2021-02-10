@@ -98,7 +98,7 @@ blogsRouter.put("/:id", async (request, response) => {
     }
   )
     .populate("user", { url: 1, username: 1, name: 1 })
-    .populate("comment", { comment: 1 });
+    .populate("comments", { content: 1 });
   response.json(updatedBlog.toJSON());
 });
 
@@ -106,12 +106,12 @@ blogsRouter.post("/:id/comments", async (request, response) => {
   const body = request.body;
   try {
     const blog = await Blog.findById(request.params.id);
+    console.log(blog);
     const comment = new Comment({
       content: body.content,
       blog: blog._id,
     });
     const savedComment = await comment.save();
-    console.log(savedComment);
     console.log(`new comment has been saved!`);
     blog.comments = blog.comments.concat(savedComment);
     await blog.save();

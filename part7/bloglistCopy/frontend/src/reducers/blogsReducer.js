@@ -13,9 +13,9 @@ const blogsReducer = (state = [], action) => {
       const newBlogs = state.filter((each) => each.id !== id);
       return newBlogs;
     case "INCREASE_LIKES":
-      const idLike = action.data.id;
+      const idBlog = action.data.id;
       const changedBlog = action.data;
-      return state.map((each) => (each.id !== idLike ? each : changedBlog));
+      return state.map((each) => (each.id !== idBlog ? each : changedBlog));
     case "RETRIEVE_ALL":
       return action.data;
     case "ADD_COMMENT":
