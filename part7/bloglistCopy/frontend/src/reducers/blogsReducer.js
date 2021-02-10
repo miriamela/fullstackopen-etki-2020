@@ -18,6 +18,12 @@ const blogsReducer = (state = [], action) => {
       return state.map((each) => (each.id !== idLike ? each : changedBlog));
     case "RETRIEVE_ALL":
       return action.data;
+    case "ADD_COMMENT":
+      const idBlogCommented = action.data.id;
+      const commentedBlog = action.data;
+      return state.map((each) =>
+        each.id !== idBlogCommented ? each : commentedBlog
+      );
     default:
       return state;
   }
@@ -68,6 +74,16 @@ export const updateLikes = (id, blog) => {
     dispatch(
       showNotification(`${updatedBlog.title}: likes has been updated`, 5)
     );
+  };
+};
+
+export const updateComments = (id, comment) => {
+  return async (dispatch) => {
+    const commentedBlog = await blogService.updateComments(id, comment);
+    await dispatch({
+      type: "ADD_COMMENT",
+      data: commentedBlog,
+    });
   };
 };
 

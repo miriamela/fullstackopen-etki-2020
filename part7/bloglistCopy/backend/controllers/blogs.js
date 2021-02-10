@@ -5,12 +5,18 @@ const Comment = require("../models/comment");
 const jwt = require("jsonwebtoken");
 
 blogsRouter.get("/", async (request, response) => {
-  const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
+  const blogs = await Blog.find({})
+    .populate("user", { username: 1, name: 1 })
+    .populate("comments", { content: 1 });
   response.json(blogs);
 });
 
 blogsRouter.get("/:id", async (request, response) => {
-  const blog = await Blog.findById(request.params.id);
+  const blog = await Blog.findById(request.params.id)
+    .populate("comments", {
+      content: 1,
+    })
+    .populate("user", { username: 1, name: 1 });
   if (blog) {
     response.json(blog);
   } else {
@@ -93,6 +99,16 @@ blogsRouter.put("/:id", async (request, response) => {
   ).populate("user", { url: 1, username: 1, name: 1 });
   response.json(updatedBlog.toJSON());
 });
+
+// blogsRouter.get("/:id/comments", async (request, response) => {
+//   try {
+//     const blog = await Blog.findById(request.params.id);
+//     const comments = await blog.comments.find({});
+//     response.json(comments);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
 blogsRouter.post("/:id/comments", async (request, response) => {
   const body = request.body;
