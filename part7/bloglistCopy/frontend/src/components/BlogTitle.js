@@ -10,6 +10,7 @@ const BlogTitle = ({ blog }) => {
     paddingLeft: 2,
     borderWidth: 1,
     marginBottom: 5,
+    minWidth: "50%",
   };
 
   return (

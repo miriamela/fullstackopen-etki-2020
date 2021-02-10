@@ -2,7 +2,7 @@ import loginService from "../services/login";
 import { showNotification } from "./notificationsReducers";
 
 const userReducer = (state = null, action) => {
-  console.log(state, action);
+  // console.log(state, action);
   switch (action.type) {
     case "LOGGED_IN":
       const user = action.data;

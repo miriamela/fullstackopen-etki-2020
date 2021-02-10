@@ -96,7 +96,9 @@ blogsRouter.put("/:id", async (request, response) => {
     {
       new: true,
     }
-  ).populate("user", { url: 1, username: 1, name: 1 });
+  )
+    .populate("user", { url: 1, username: 1, name: 1 })
+    .populate("comment", { comment: 1 });
   response.json(updatedBlog.toJSON());
 });
 
@@ -109,10 +111,12 @@ blogsRouter.post("/:id/comments", async (request, response) => {
       blog: blog._id,
     });
     const savedComment = await comment.save();
+    console.log(savedComment);
     console.log(`new comment has been saved!`);
-    blog.comments = blog.comments.concat(savedComment._id);
+    blog.comments = blog.comments.concat(savedComment);
     await blog.save();
-    response.json(savedComment);
+    response.json(blog);
+    console.log(blog);
   } catch (error) {
     console.log(`error: ${error}`);
   }
