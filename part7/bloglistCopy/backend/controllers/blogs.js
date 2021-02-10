@@ -100,16 +100,6 @@ blogsRouter.put("/:id", async (request, response) => {
   response.json(updatedBlog.toJSON());
 });
 
-// blogsRouter.get("/:id/comments", async (request, response) => {
-//   try {
-//     const blog = await Blog.findById(request.params.id);
-//     const comments = await blog.comments.find({});
-//     response.json(comments);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
 blogsRouter.post("/:id/comments", async (request, response) => {
   const body = request.body;
   try {

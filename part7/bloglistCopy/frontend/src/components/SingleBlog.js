@@ -5,6 +5,7 @@ import { updateLikes } from "../reducers/blogsReducer";
 import { deleteBlog } from "../reducers/blogsReducer";
 import blogService from "../services/blog";
 import { updateComments } from "../reducers/blogsReducer";
+import { Form, Button } from "react-bootstrap";
 
 const SingleBlog = () => {
   const history = useHistory();
@@ -22,7 +23,6 @@ const SingleBlog = () => {
     try {
       const updatedBlog = { ...blog, likes: blog.likes + 1 };
       dispatch(updateLikes(blog.id, updatedBlog));
-      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -60,24 +60,30 @@ const SingleBlog = () => {
     console.log(newComment);
     dispatch(updateComments(blog.id, newComment));
     // same issue of adding a blog... it needs to reload to see it listed...
-    window.location.reload();
   };
   return (
-    <div>
+    <div className="container">
       <h3>{blog.title}</h3>
       <a>{blog.url}</a>
       <p>
         likes <span className="likeNumber">{blog.likes}</span>{" "}
-        <button id="buttonLikes" type="button" onClick={increaseLikes}>
+        <Button
+          className="btn btn-primary btn-sm"
+          id="buttonLikes"
+          type="button"
+          onClick={increaseLikes}
+        >
           like
-        </button>
+        </Button>
       </p>
       <p>added by {blog.user.name}</p>
       {showDeleteButton()}
       <h3>comments</h3>
       <form method="POST" onSubmit={addComment}>
-        <input type="text" id="comment" name="comment"></input>
-        <button type="submit">add comment</button>
+        <Form.Control type="text" id="comment" name="comment"></Form.Control>
+        <Button className="btn btn-primary btn-sm" type="submit">
+          add comment
+        </Button>
         <ul>
           {blog.comments.map((each) => (
             <li key={each.id}>{each.content}</li>

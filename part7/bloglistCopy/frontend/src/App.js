@@ -37,13 +37,13 @@ const App = () => {
 
   return (
     <Router>
-      <div className="App">
-        <Notification />
+      <div className="container">
         {user === null ? (
           <LoginForm />
         ) : (
           <>
             <NavBar />
+            <Notification />
             <Switch>
               <Route path="/blogs/:id">
                 <SingleBlog />

@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-const Blog = ({ blog }) => {
+const BlogTitle = ({ blog }) => {
   const blogStyle = {
     border: "2px solid black",
     paddingTop: 10,
@@ -21,7 +21,7 @@ const Blog = ({ blog }) => {
   );
 };
 
-export default Blog;
-Blog.propTypes = {
+export default BlogTitle;
+BlogTitle.propTypes = {
   blog: PropTypes.object.isRequired,
 };

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { initializeUsers } from "../reducers/allUsersReducer";
 import { Link } from "react-router-dom";
+import { Table } from "react-bootstrap";
 
 const Users = () => {
   const users = useSelector((state) => state.users);
@@ -15,7 +16,7 @@ const Users = () => {
   return (
     <>
       <h2>Users</h2>
-      <table>
+      <Table striped bordered hover size="sm">
         <tbody>
           <tr>
             <th></th>
@@ -34,7 +35,7 @@ const Users = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </>
   );
 };

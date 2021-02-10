@@ -3,11 +3,11 @@ import React from "react";
 import blogService from "../services/blog";
 import { useDispatch, useSelector } from "react-redux";
 import { createBlog } from "../reducers/blogsReducer";
+import { Form, Button } from "react-bootstrap";
 
 const BlogForm = ({ blogFormRef }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const displayBlock = { display: "block" };
   const addBlog = async (event) => {
     event.preventDefault();
     const newObject = {
@@ -24,30 +24,31 @@ const BlogForm = ({ blogFormRef }) => {
       dispatch(createBlog(newObject));
       // this reload is because of the issue saving the blog with the user id number but not loading immediately
       // the user information, without it the user name iis not immediately showed along with the delete button...
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
-    <>
-      <h2>Create new blog</h2>
+    <div className="container">
       <form onSubmit={addBlog} className="form" method="post">
-        <label htmlFor="title">title:</label>
-        <input type="text" id="title" name="title"></input>
-        <label htmlFor="author">author:</label>
-        <input type="text" id="author" name="author"></input>
-        <label htmlFor="url">url:</label>
-        <input type="text" id="url" name="url"></input>
-        <button id="createButton" type="submit" style={displayBlock}>
+        <h5>Create new blog</h5>
+        <Form.Label htmlFor="title">title:</Form.Label>
+        <Form.Control type="text" id="title" name="title"></Form.Control>
+        <Form.Label htmlFor="author">author:</Form.Label>
+        <Form.Control type="text" id="author" name="author"></Form.Control>
+        <Form.Label htmlFor="url">url:</Form.Label>
+        <Form.Control type="text" id="url" name="url"></Form.Control>
+        <Button
+          className="btn btn-primary btn-sm"
+          id="createButton"
+          type="submit"
+        >
           create
-        </button>
+        </Button>
       </form>
-    </>
+    </div>
   );
 };
 export default BlogForm;
-
-// BlogForm.propTypes = {
-//   createNewBlog: PropTypes.func.isRequired,
-// };
