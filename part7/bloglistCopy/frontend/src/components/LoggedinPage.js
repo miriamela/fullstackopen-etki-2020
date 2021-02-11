@@ -15,15 +15,19 @@ const LoggedinPage = ({ blogFormRef }) => {
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogForm blogFormRef={blogFormRef} />
       </Togglable>
-      <div className="allBlogs" style={{ marginTop: "20px" }}>
+      <ul className="list-group" style={{ marginTop: "20px" }}>
         {blogs
           .sort((a, b) => {
             return b.likes - a.likes;
           })
           .map((blog) => {
-            return <BlogTitle key={blog.id} blog={blog} />;
+            return (
+              <li className="list-group-item">
+                <BlogTitle key={blog.id} blog={blog} />
+              </li>
+            );
           })}
-      </div>
+      </ul>
     </div>
   );
 };

@@ -81,7 +81,6 @@ export const updateLikes = (id, blog) => {
 export const addComments = (id, comment) => {
   return async (dispatch) => {
     const commentedBlog = await blogService.updateComments(id, comment);
-    // console.log(commentedBlog);
     await dispatch({
       type: "ADD_COMMENT",
       data: commentedBlog,

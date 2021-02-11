@@ -5,14 +5,13 @@ import { Button } from "react-bootstrap";
 
 const User = ({ user }) => {
   const dispatch = useDispatch();
-
   const handleLogout = () => {
     window.localStorage.removeItem("loggedBlogUser");
     dispatch(userLogOut());
   };
   return (
-    <>
-      <h6 className="userLoggedIn">{user.name} logged in</h6>
+    <div style={{ padding: "14px" }}>
+      <p className="userLoggedIn">{user.name} logged in</p>
       <Button
         className="btn btn-primary btn-sm logout"
         type="button"
@@ -20,7 +19,7 @@ const User = ({ user }) => {
       >
         Logout
       </Button>
-    </>
+    </div>
   );
 };
 

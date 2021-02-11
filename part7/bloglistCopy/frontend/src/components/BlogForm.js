@@ -22,9 +22,6 @@ const BlogForm = ({ blogFormRef }) => {
       blogFormRef.current.toggleVisibility();
       blogService.setToken(user.token);
       dispatch(createBlog(newObject));
-      // this reload is because of the issue saving the blog with the user id number but not loading immediately
-      // the user information, without it the user name iis not immediately showed along with the delete button...
-      // window.location.reload();
     } catch (error) {
       console.log(error);
     }

@@ -14,7 +14,7 @@ const SingleBlog = () => {
   const user = useSelector((state) => state.user);
   const blogs = useSelector((state) => state.blogs);
   const blog = blogs.find((each) => each.id === id);
-  // console.log(blog);
+
   if (!blog) {
     return null;
   }
@@ -22,7 +22,6 @@ const SingleBlog = () => {
     event.preventDefault();
     try {
       const updatedBlog = { ...blog, likes: blog.likes + 1 };
-      console.log(updatedBlog);
       dispatch(updateLikes(blog.id, updatedBlog));
     } catch (error) {
       console.log(error);
@@ -63,9 +62,7 @@ const SingleBlog = () => {
       content: event.target.comment.value,
     };
     event.target.comment.value = "";
-    // console.log(newComment);
     dispatch(addComments(blog.id, newComment));
-    // same issue of adding a blog... it needs to reload to see it listed...
   };
   return (
     <div className="container">
