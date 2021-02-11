@@ -85,7 +85,7 @@ export const addComments = (id, comment) => {
       type: "ADD_COMMENT",
       data: commentedBlog,
     });
-    dispatch(showNotification(`${commentedBlog.title} has a new comment!`, 5));
+    dispatch(showNotification(`${commentedBlog.title} has a new comment`, 5));
   };
 };
 
