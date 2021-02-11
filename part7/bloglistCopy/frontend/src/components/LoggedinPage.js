@@ -22,7 +22,7 @@ const LoggedinPage = ({ blogFormRef }) => {
           })
           .map((blog) => {
             return (
-              <li className="list-group-item">
+              <li key={blog.id} className="list-group-item">
                 <BlogTitle key={blog.id} blog={blog} />
               </li>
             );
