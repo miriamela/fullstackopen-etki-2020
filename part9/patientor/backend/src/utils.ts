@@ -40,7 +40,7 @@ const isGender =(param: any): param is Gender=>{
     return Object.values(Gender).includes(param)
 }
 const parseGender = (gender:any): Gender=>{
-    if(!gender || isGender(gender)){
+    if(!gender || !isGender(gender)){
         throw new Error("Incorrect or missing gender" + gender)
     }
     return gender
