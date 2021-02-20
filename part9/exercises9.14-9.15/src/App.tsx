@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import Header from "./components/Header";
-import Total  from "./components/Total";
+
 
 interface CoursePartBase {
   name: string;
@@ -47,17 +46,28 @@ const Part: React.FC<{part:CoursePart}> =({part})=>{
   
       switch (part.name) {
           case "Fundamentals":
-              return (<p>{part.name} {part.description} {part.exerciseCount}</p>);
+              return (<p>{part.name}, {part.description}, {part.exerciseCount}</p>);
           case "Using props to pass data":
-              return (<p>{part.name} {part.exerciseCount} {part.groupProjectCount}</p>);
+              return (<p>{part.name}, {part.exerciseCount}, {part.groupProjectCount}</p>);
           case "Deeper type usage":
-              return (<p>{part.name} {part.description} {part.exerciseCount} {part.exerciseSubmissionLink}</p>);
+              return (<p>{part.name}, {part.description}, {part.exerciseCount}, {part.exerciseSubmissionLink}</p>);
           default:
               return assertNever(part)
       }  
 }
 
-
+const Header: React.FC<{courseName:string}> =({courseName})=>{
+  return(
+      <h1>{courseName}</h1>
+  )
+}
+const Total: React.FC<{total:number}>=({total})=>{
+  return(
+      <p>
+      Number of exercises, {total}
+    </p>
+  ) 
+}
 
 const App: React.FC = () => {
   const courseName = "Half Stack application development";
@@ -86,7 +96,6 @@ const App: React.FC = () => {
       <Header courseName={courseName}/>
       <Content courseParts ={courseParts} />
      <Total total={total}/>
-    
     </div>
   );
 };
