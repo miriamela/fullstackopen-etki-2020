@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {Patient} from "../types";
 import axios from "axios";
 import {apiBaseUrl} from "../constants";
+import {Icon} from "semantic-ui-react";
 
 
 
@@ -27,14 +28,27 @@ const PatientPage: React.FC=()=>{
        fetchPatient()
     }, [dispatch, id.id])
 
+    
+
     console.log(patient);
    if(!patient){
        return null
    }
+//    I have still no idea how to use typescript
+   const showIcon = (gender: string): "mars"| "venus"|"genderless"=>{
+    if (gender==="male"){
+        return "mars"
+    }
+    else if(gender=== "female"){
+        return "venus"
+    }else{
+        return "genderless"
+    }
+}
 
     return(
         <div>
-           <h2>{patient.name}</h2>
+           <h2>{patient.name} <Icon className={showIcon(patient.gender)}/></h2>
            <p>ssn: {patient.ssn}</p>
            <p>occupation: {patient.occupation}</p>
         </div>
