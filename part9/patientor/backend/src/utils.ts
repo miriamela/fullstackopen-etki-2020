@@ -45,6 +45,12 @@ const parseGender = (gender:any): Gender=>{
     }
     return gender
 }
+const parseEntries=(entries: any): []=>{
+    if(!entries){
+        throw new Error("Incorrect or missing entries" + entries)
+    }
+    return entries
+}
 
 const toNewPatientEntry = (object: any):newPatientEntry=>{
     const newEntry: newPatientEntry={
@@ -52,6 +58,7 @@ const toNewPatientEntry = (object: any):newPatientEntry=>{
         dateOfBirth: parseDateOfBirth(object.dateOfBirth),
         ssn: parseSSN(object.ssn),
         gender: parseGender(object.gender),
+        entries: parseEntries(object.entries),
         occupation: parseOccupation(object.occupation),
     }
     return newEntry

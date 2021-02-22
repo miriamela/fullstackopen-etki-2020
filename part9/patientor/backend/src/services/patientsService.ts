@@ -21,7 +21,7 @@ occupation
 }))
 }
 const findById =(id: string): PatientEntry | undefined=>{
-const entry = patients.find(each=> each.id===id)
+const entry= patients.find(each=> each.id===id) as PatientEntry
 return entry
 }
 
