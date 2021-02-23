@@ -3,11 +3,11 @@ import axios from "axios";
 import PatientPage from "./PatientPage/index";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Button, Divider, Header, Container } from "semantic-ui-react";
-
 import { apiBaseUrl } from "./constants";
 import { useStateValue } from "./state";
-import { Patient } from "./types";
+import { Patient, Diagnoses } from "./types";
 import PatientListPage from "./PatientListPage";
+import {importAllPatients, importAllDiagnosis} from "./state/reducer";
 
 const App: React.FC = () => {
   const [, dispatch] = useStateValue();
@@ -19,13 +19,27 @@ const App: React.FC = () => {
         const { data: patientListFromApi } = await axios.get<Patient[]>(
           `${apiBaseUrl}/patients`
         );
-        dispatch({ type: "SET_PATIENT_LIST", payload: patientListFromApi });
+        dispatch(importAllPatients(patientListFromApi))
+          // { type: "SET_PATIENT_LIST", payload: patientListFromApi });
       } catch (e) {
         console.error(e);
       }
     };
     fetchPatientList();
   }, [dispatch]);
+
+  React.useEffect(() => {
+    const fetchDiagnosis =async ()=>{
+        try{
+            const {data: diagnosesListFromApi} = await axios.get<Diagnoses[]>( `${apiBaseUrl}/diagnoses`)
+            dispatch(importAllDiagnosis(diagnosesListFromApi))
+            console.log(diagnosesListFromApi)
+        }catch(e){
+          console.log(e)
+        }
+    }
+    fetchDiagnosis();
+}, [dispatch])
 
   return (
     <div className="App">
