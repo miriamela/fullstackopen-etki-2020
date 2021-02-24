@@ -9,10 +9,16 @@ import {Icon} from "semantic-ui-react";
 import {setOnePatientInfo} from "../state/reducer";
 
 
+
 const PatientPage: React.FC=()=>{
     const id=useParams<{id: string}>();
     const [patient, setPatient]=useState<Patient|undefined>();
     const [, dispatch] = useStateValue();
+    const [{diagnoses}] = useStateValue();
+    
+console.log(diagnoses)
+   
+    // console.log(diagnoses["F43.2"].name) 
 
     React.useEffect(() => {
         const fetchPatient = async()=>{
@@ -27,10 +33,8 @@ const PatientPage: React.FC=()=>{
         }
        fetchPatient()
     }, [dispatch, id.id])
-console.log(patient);
-   if(!patient){
-       return null
-   }
+  
+    console.log(patient);
   
 //    I have still no idea how to use typescript
    const showIcon = (gender: string): "mars"| "venus"|"genderless"=>{
@@ -43,7 +47,10 @@ console.log(patient);
         return "genderless"
     }
     }
-
+    
+    if(!patient){
+        return null
+    }
     return(
         <>
         <div>
@@ -54,16 +61,19 @@ console.log(patient);
         <div>
             <h2>entries</h2>
             {
+                patient.entries.length>0? 
                 patient.entries.map(each=>(
                     <div key={each.id}>
                     <p>{each.description}</p>
-                    <ul>
-                        {each.diagnosisCodes?.map(each=>(
-                            <li key={each}>{each} </li>
-                        ))}
+                    <ul> 
+                        {
+                        each.diagnosisCodes? each.diagnosisCodes.map(each=>(
+                        <li key={each}>{each}, {diagnoses[each].name}
+                        </li>)) : null
+                        }
                     </ul>
                     </div>
-                ))
+                )): null
             }
         </div>
         </>
