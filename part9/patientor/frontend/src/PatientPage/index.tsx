@@ -7,6 +7,7 @@ import axios from "axios";
 import {apiBaseUrl} from "../constants";
 import {Icon} from "semantic-ui-react";
 import {setOnePatientInfo} from "../state/reducer";
+import EntryDetails from "../components/EntryDetails";
 
 
 
@@ -58,9 +59,13 @@ console.log(diagnoses)
            <p>ssn: {patient.ssn}</p>
            <p>occupation: {patient.occupation}</p>
         </div>
+        <br/>
         <div>
-            <h2>entries</h2>
+            <h2>Entries</h2>
             {
+                patient.entries.map(each=><EntryDetails key={each.id} entry={each}/>)
+            }         
+            {/* {
                 patient.entries.length>0? 
                 patient.entries.map(each=>(
                     <div key={each.id}>
@@ -74,7 +79,7 @@ console.log(diagnoses)
                     </ul>
                     </div>
                 )): null
-            }
+            } */}
         </div>
         </>
     )
