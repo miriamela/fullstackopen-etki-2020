@@ -13,6 +13,8 @@ const HospitalDisplay: React.FC<{entry:HospitalEntry, iconType: string}>=({entry
         <Segment color="blue">
             <h3>{entry.date}, <Icon className={iconType}/></h3>
             <p><i>{entry.description}</i></p>
+            {/* this part is still creating issues, the page will render before the diagnoses promise is fulfilled, 
+            therefore if reloading the page it will give error*/}
             <h4>Diagnoses:</h4>
             <ul>
                 {

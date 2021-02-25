@@ -38,7 +38,7 @@ const PatientListPage: React.FC = () => {
       setError(e.response.data.error);
     }
   };
-
+console.log(patients)
   return (
     <div className="App">
       <Container textAlign="center">

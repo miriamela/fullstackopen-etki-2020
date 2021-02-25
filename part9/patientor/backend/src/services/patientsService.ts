@@ -28,6 +28,7 @@ return entry
 const addEntry =(entry: newPatientEntry): PatientEntry =>{
   const newPatientEntry = {
       id : String(Math.floor(Math.random()* 100000)),
+      entries: [],
       ...entry,
   }
 patients.push(newPatientEntry)
