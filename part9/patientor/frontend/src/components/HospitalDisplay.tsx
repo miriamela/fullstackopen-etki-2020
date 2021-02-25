@@ -1,21 +1,22 @@
 import React from "react";
 import {HospitalEntry} from "../types";
 import {useStateValue} from "../state/state";
+import {Icon, Segment} from "semantic-ui-react";
 
-const HospitalDisplay: React.FC<{entry:HospitalEntry}>=({entry})=>{
+const HospitalDisplay: React.FC<{entry:HospitalEntry, iconType: string}>=({entry,iconType})=>{
     const [{diagnoses}] =useStateValue()
     // console.log(entry)
-    if(!diagnoses ||entry.diagnosisCodes ===undefined ){
+    if(!diagnoses){
         return null
     }
     return(
-        <section>
-            <h3>{entry.date}, {entry.type}</h3>
-            <p>{entry.description}</p>
+        <Segment color="blue">
+            <h3>{entry.date}, <Icon className={iconType}/></h3>
+            <p><i>{entry.description}</i></p>
             <h4>Diagnoses:</h4>
             <ul>
                 {
-                    entry.diagnosisCodes.length>0? entry.diagnosisCodes.map(each=>
+                    entry.diagnosisCodes!== undefined? entry.diagnosisCodes.map(each=>
                         <li key={each}>{entry.diagnosisCodes}: {diagnoses[each].name} </li>
                         ):null
                 }
@@ -23,7 +24,7 @@ const HospitalDisplay: React.FC<{entry:HospitalEntry}>=({entry})=>{
             </ul>
             <h4>Discharged: {entry.discharge.date}</h4>
             <p>{entry.discharge.criteria}</p> 
-        </section>
+        </Segment>
     )
 }
 export default HospitalDisplay;

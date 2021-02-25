@@ -1,14 +1,20 @@
 import React from "react";
 import {OccupationalHealthcareEntry} from "../types";
+import {Icon, Segment} from "semantic-ui-react"
 
-const OccupationalHealthcare:React.FC<{entry:OccupationalHealthcareEntry}>=({entry})=>{
+interface MyProps{
+    entry:OccupationalHealthcareEntry,
+    iconType: string
+}
+
+const OccupationalHealthcareDisplay:React.FC<MyProps>=({entry,iconType})=>{
 console.log(entry)
     return(
-        <section>
-            <h3>{entry.date}, {entry.type}, {entry.employerName}</h3>
-            <p>{entry.description}</p>
-        </section>
+        <Segment color="blue">
+            <h3>{entry.date}, <Icon className={iconType}/>, {entry.employerName}</h3>
+            <p><i>{entry.description}</i></p>
+        </Segment>
     )
 }
 
-export default OccupationalHealthcare;
+export default OccupationalHealthcareDisplay;

@@ -1,8 +1,8 @@
 import React from "react";
 import { Entry } from "../types";
-import HealthCheckDisplay from "./HealthCheckEntry";
+import HealthCheckDisplay from "./HealthCheckDisplay";
 import HospitalDisplay from "./HospitalDisplay";
-import OccupationalHealthcare from "./OccupationalHealthcareDisplay";
+import OccupationalHealthcareDisplay from "./OccupationalHealthcareDisplay";
 
 const EntryDetails: React.FC<{entry: Entry}> = ({entry})=>{
   const assertNever = (value: never): never => {
@@ -10,18 +10,31 @@ const EntryDetails: React.FC<{entry: Entry}> = ({entry})=>{
       `Unhandled discriminated union member: ${JSON.stringify(value)}`
     );
   };
+
+  const showIconType=(type: string): "user md"|"stethoscope"|"hospital"=>{
+    if(type === "OccupationalHealthcare"){
+      return "stethoscope"
+    }
+    else if(type=== "Hospital"){
+      return "hospital"
+    }
+    else{
+      return "user md"
+    }
+    
+  }
 switch (entry.type) {
   case "HealthCheck":
     return (
-      <HealthCheckDisplay entry={entry}/>
+      <HealthCheckDisplay iconType={showIconType(entry.type)} entry={entry}/>
     );
   case "Hospital":
     return(
-      <HospitalDisplay entry={entry}/>
+      <HospitalDisplay iconType={showIconType(entry.type)}entry={entry}/>
     );
   case "OccupationalHealthcare":
     return(
-      <OccupationalHealthcare entry={entry}/>
+      <OccupationalHealthcareDisplay iconType={showIconType(entry.type)} entry={entry}/>
     )
   default:
     return assertNever(entry)
