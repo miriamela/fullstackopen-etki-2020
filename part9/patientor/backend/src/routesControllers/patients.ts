@@ -34,5 +34,9 @@ patientsRouter.post("/", (req, res)=>{
     res.json(addedPatient)
    
 })
+patientsRouter.post("/:id/entries", (_req, res)=>{
+    
+    res.json()
+})
 
 export default patientsRouter;
