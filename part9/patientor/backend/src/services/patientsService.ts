@@ -1,5 +1,5 @@
 import allPatients from "../../data/patients";
-import {newPatientEntry, NonSensitiveData, PatientEntry} from "../types";
+import {newPatientEntry, NonSensitiveData, PatientEntry, Entry} from "../types";
 
 
 const getAll =(): PatientEntry[]=>{
@@ -14,7 +14,7 @@ gender,
 occupation
 }))
 }
-const findById =(id: string): PatientEntry | undefined=>{
+const findById =(id: string): PatientEntry =>{
 const entry= allPatients.find(each=> each.id===id) as PatientEntry
 return entry
 }
@@ -28,10 +28,15 @@ const addEntry =(entry: newPatientEntry): PatientEntry =>{
 allPatients.push(newPatientEntry)
 return newPatientEntry;
 }
+const addEntries = (entries: Entry, patient: PatientEntry):PatientEntry=>{
+    patient.entries.push(entries)
+    return patient
+}
 
 export default{
     getAll: getAll,
     addEntry: addEntry,
     getNonSensitiveData: getNonSensitiveData,
-    findById: findById
+    findById: findById,
+    addEntries: addEntries
 }
