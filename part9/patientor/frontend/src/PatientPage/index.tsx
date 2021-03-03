@@ -2,34 +2,45 @@ import React from "react";
 import {useParams} from "react-router-dom";
 import {useStateValue} from "../state/state";
 import {useState} from "react";
-import {Patient} from "../types";
+import {Patient, Entry} from "../types";
 import axios from "axios";
 import {apiBaseUrl} from "../constants";
 import {Icon,Button} from "semantic-ui-react";
 import {setOnePatientInfo, updatePatientInfo} from "../state/reducer";
 import EntryDetails from "../components/EntryDetails";
-import AddHealthCheckModal, {HealthCheckFormEntries}  from "../AddHealthCheckModal";
+import AddHealthCheckModal from "../AddHealthCheckModal";
+import AddOccupationalHealthcareModal from "../AddOccupationalHealthcareModal"
+import HospitalModal from "../HospitalModal";
 
+type DataFromEntries =Omit<Entry, "id">
 
 const PatientPage: React.FC=()=>{
     const id=useParams<{id:string}>();
     const [patient, setPatient]=useState<Patient|undefined>();
     const [, dispatch] = useStateValue();
-    const [modalOpen, setModalOpen] =React.useState<boolean>(false)
+    const [modalOpenHealthCheck, setModalOpenHealthCheck] =React.useState<boolean>(false)
+    const [modalOpenOccupational, setModalOpenOccupational]=React.useState<boolean>(false)
+    const [modalOpenHospital, setModalOpenHospital] =React.useState<boolean>(false)
     const [error, setError] = React.useState<string | undefined>();
 
-    console.log(id)
-
-   
-   const openModal=(): void=>{
-       setModalOpen(true)
+    // console.log(id)
+   const openModalHealthCheck=(): void=>{
+       setModalOpenHealthCheck(true)
+   }
+   const openModalOccupational=()=>{
+       setModalOpenOccupational(true)
+   }
+   const openModalHospital=(): void=>{
+       setModalOpenHospital(true)
    }
    const closeModal=():void=>{
-       setModalOpen(false)
+       setModalOpenHealthCheck(false)
+       setModalOpenOccupational(false)
+       setModalOpenHospital(false)
        setError(undefined)
    }
 
-   const addingEntries=async(values: HealthCheckFormEntries)=>{
+   const addingEntries=async(values: DataFromEntries)=>{
     try{
     const {data: patientWithEntries} = await axios.post(
         `${apiBaseUrl}/patients/${id.id}/entries`,
@@ -66,7 +77,6 @@ const PatientPage: React.FC=()=>{
     }, [dispatch, id.id])
   
     // console.log(patient);
-  
    const showIcon = (gender: string): "mars"| "venus"|"genderless"=>{
     if (gender==="male"){
         return "mars"
@@ -95,8 +105,15 @@ const PatientPage: React.FC=()=>{
                 patient.entries.map(each=><EntryDetails key={each.id} entry={each}/>)
             }         
         </div>
-        <AddHealthCheckModal error={error} modalOpen={modalOpen} closeModal={closeModal} onSubmit={addingEntries}/>
-        <Button onClick={()=>openModal()}>Add Health Check Information</Button>
+        <AddHealthCheckModal error={error} modalOpen={modalOpenHealthCheck} closeModal={closeModal} onSubmit={addingEntries}/>
+        <AddOccupationalHealthcareModal error={error} modalOpen={modalOpenOccupational} closeModal={closeModal} onSubmit={addingEntries}/>
+        <HospitalModal error={error} modalOpen={modalOpenHospital} closeModal={closeModal} onSubmit={addingEntries}/>
+        <div className="ui hidden divider"></div>
+        <Button className="ui primary button" onClick={()=>openModalHealthCheck()}>Add Health Check Information</Button>
+        <div className="ui hidden divider"></div>
+        <Button onClick={()=>openModalOccupational()}>Add Occupational Healthcare Information</Button>
+        <div className="ui hidden divider"></div>
+        <Button onClick={()=>openModalHospital()}>Add Hospital Information</Button>
         </>
     )
 }
