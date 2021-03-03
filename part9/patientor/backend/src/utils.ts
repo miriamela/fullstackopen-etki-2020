@@ -98,7 +98,7 @@ const isRating =(param: any): param is HealthCheckRating=>{
 
 const parseHealthCheckRating =(healthCheckRating: any):HealthCheckRating=>{
     console.log(healthCheckRating)
-    if(!healthCheckRating || !isRating(healthCheckRating)){
+    if(healthCheckRating === undefined || !isRating(healthCheckRating)){
         throw new Error("Incorrect or missing health check rating" + healthCheckRating)
     }
     return healthCheckRating

@@ -16,6 +16,7 @@ const PatientPage: React.FC=()=>{
     const [patient, setPatient]=useState<Patient|undefined>();
     const [, dispatch] = useStateValue();
     const [modalOpen, setModalOpen] =React.useState<boolean>(false)
+    const [error, setError] = React.useState<string | undefined>();
 
     console.log(id)
 
@@ -25,6 +26,7 @@ const PatientPage: React.FC=()=>{
    }
    const closeModal=():void=>{
        setModalOpen(false)
+       setError(undefined)
    }
 
    const addingEntries=async(values: HealthCheckFormEntries)=>{
@@ -37,13 +39,15 @@ const PatientPage: React.FC=()=>{
     closeModal()
         }catch (e){
     console.log(e)
+    setError(e.response.data.error)
         }
         try{
             const {data: patient} = await axios.get<Patient>(`${apiBaseUrl}/patients/${id.id}`)
                 setPatient(patient);
                 dispatch(setOnePatientInfo(patient))
         }catch(e){
-            console.log(e)
+            console.error(e.response.data)
+            setError(e.response.data.error)
         }
         }
 
@@ -55,14 +59,14 @@ const PatientPage: React.FC=()=>{
                 dispatch(setOnePatientInfo(patient))
             }catch(e){
                 console.log(e)
+                setError(e.response.data.error)
             } 
         }
        fetchPatient()
     }, [dispatch, id.id])
   
-    console.log(patient);
+    // console.log(patient);
   
-//    I have still no idea how to use typescript
    const showIcon = (gender: string): "mars"| "venus"|"genderless"=>{
     if (gender==="male"){
         return "mars"
@@ -91,7 +95,7 @@ const PatientPage: React.FC=()=>{
                 patient.entries.map(each=><EntryDetails key={each.id} entry={each}/>)
             }         
         </div>
-        <AddHealthCheckModal modalOpen={modalOpen} closeModal={closeModal} onSubmit={addingEntries}/>
+        <AddHealthCheckModal error={error} modalOpen={modalOpen} closeModal={closeModal} onSubmit={addingEntries}/>
         <Button onClick={()=>openModal()}>Add Health Check Information</Button>
         </>
     )
