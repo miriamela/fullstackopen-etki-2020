@@ -5,21 +5,47 @@ import {useState} from "react";
 import {Patient} from "../types";
 import axios from "axios";
 import {apiBaseUrl} from "../constants";
-import {Icon} from "semantic-ui-react";
-import {setOnePatientInfo} from "../state/reducer";
+import {Icon,Button} from "semantic-ui-react";
+import {setOnePatientInfo, updatePatientInfo} from "../state/reducer";
 import EntryDetails from "../components/EntryDetails";
-
+import AddHealthCheckModal, {HealthCheckFormEntries}  from "../AddHealthCheckModal";
 
 
 const PatientPage: React.FC=()=>{
-    const id=useParams<{id: string}>();
+    const id=useParams<{id:string}>();
     const [patient, setPatient]=useState<Patient|undefined>();
     const [, dispatch] = useStateValue();
-    const [{diagnoses}] = useStateValue();
-    
-console.log(diagnoses)
+    const [modalOpen, setModalOpen] =React.useState<boolean>(false)
+
+    console.log(id)
+
    
-    // console.log(diagnoses["F43.2"].name) 
+   const openModal=(): void=>{
+       setModalOpen(true)
+   }
+   const closeModal=():void=>{
+       setModalOpen(false)
+   }
+
+   const addingEntries=async(values: HealthCheckFormEntries)=>{
+    try{
+    const {data: patientWithEntries} = await axios.post(
+        `${apiBaseUrl}/patients/${id.id}/entries`,
+        values,
+            );
+    dispatch(updatePatientInfo(patientWithEntries))
+    closeModal()
+        }catch (e){
+    console.log(e)
+        }
+        try{
+            const {data: patient} = await axios.get<Patient>(`${apiBaseUrl}/patients/${id.id}`)
+                setPatient(patient);
+                dispatch(setOnePatientInfo(patient))
+        }catch(e){
+            console.log(e)
+        }
+        }
 
     React.useEffect(() => {
         const fetchPatient = async()=>{
@@ -27,7 +53,6 @@ console.log(diagnoses)
                 const {data: patient} = await axios.get<Patient>(`${apiBaseUrl}/patients/${id.id}`)
                 setPatient(patient);
                 dispatch(setOnePatientInfo(patient))
-                    // {type: "UPDATE_PATIENT", payload: patient})
             }catch(e){
                 console.log(e)
             } 
@@ -65,22 +90,9 @@ console.log(diagnoses)
             {
                 patient.entries.map(each=><EntryDetails key={each.id} entry={each}/>)
             }         
-            {/* {
-                patient.entries.length>0? 
-                patient.entries.map(each=>(
-                    <div key={each.id}>
-                    <p>{each.description}</p>
-                    <ul> 
-                        {
-                        each.diagnosisCodes? each.diagnosisCodes.map(each=>(
-                        <li key={each}>{each}, {diagnoses[each].name}
-                        </li>)) : null
-                        }
-                    </ul>
-                    </div>
-                )): null
-            } */}
         </div>
+        <AddHealthCheckModal modalOpen={modalOpen} closeModal={closeModal} onSubmit={addingEntries}/>
+        <Button onClick={()=>openModal()}>Add Health Check Information</Button>
         </>
     )
 }

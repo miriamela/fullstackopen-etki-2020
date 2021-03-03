@@ -36,6 +36,8 @@ patientsRouter.post("/", (req, res)=>{
 })
 patientsRouter.post("/:id/entries", (req, res)=>{
     const patient= patientsService.findById(req.params.id)
+    console.log(patient)
+    console.log(req.body)
     const newEntries = toNewEntry(req.body)
     try{
         // if (patient !== undefined){

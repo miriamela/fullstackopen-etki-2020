@@ -84,18 +84,20 @@ const parseSpecialist=(specialist: string):string=>{
     return specialist
 }
 
-const parseDiagnosisCode=(diagnosisCode: any): string[]=>{
-    if(!diagnosisCode){
-        throw new Error("incorrect or missing diagnosis code" + diagnosisCode)
+const parseDiagnosisCodes=(diagnosisCodes: any): string[]=>{
+    if(!diagnosisCodes){
+        throw new Error("incorrect or missing diagnosis code" + diagnosisCodes)
     }
-    return diagnosisCode
+    return diagnosisCodes
 }
 
 
 const isRating =(param: any): param is HealthCheckRating=>{
     return Object.values(HealthCheckRating).includes(param)
 }
+
 const parseHealthCheckRating =(healthCheckRating: any):HealthCheckRating=>{
+    console.log(healthCheckRating)
     if(!healthCheckRating || !isRating(healthCheckRating)){
         throw new Error("Incorrect or missing health check rating" + healthCheckRating)
     }
@@ -128,7 +130,7 @@ export const toNewEntry=(object:any):Entry=>{
         description: parseDescription(object.description),
         date: parseDate(object.date),
         specialist: parseSpecialist(object.specialist),
-        diagnosisCodes:parseDiagnosisCode(object.diagnosisCode)
+        diagnosisCodes:parseDiagnosisCodes(object.diagnosisCodes)
     }
  if(!object.type || !isString(object.type)){
      throw new Error("Incorrect or missing type" + object.type)

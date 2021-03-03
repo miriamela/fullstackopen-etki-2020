@@ -93,3 +93,9 @@ export const importAllDiagnosis =(diagnosisListFromApi: Diagnoses[]): Action=>{
     payload: diagnosisListFromApi
   }
 }
+export const updatePatientInfo=(updatedPatient:Patient):Action=>{
+  return{
+    type:"UPDATE_PATIENT",
+    payload: updatedPatient
+  }
+}
