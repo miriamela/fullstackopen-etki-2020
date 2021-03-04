@@ -1,16 +1,16 @@
 import React from "react";
-import {HealthCheckFormEntries} from "./index";
+import {HospitalFormEntries} from "./index";
 import {Field, Formik, Form} from "formik";
 import {Grid, Button} from "semantic-ui-react";
-import {TextField, NumberField, DiagnosisSelection} from "../AddPatientModal/FormField";
-import { useStateValue } from "../state";
+import {TextField, DiagnosisSelection} from "../AddPatientModal/FormField";
+import {useStateValue} from "../state";
 
 interface Props{
-    onSubmit: (values:HealthCheckFormEntries)=>void;
-    closeModal: ()=>void;
+    onSubmit: (values:HospitalFormEntries )=>void;
+    closeModal:()=>void
 }
 
-const AddHealthCheckForm:React.FC<Props>=({onSubmit, closeModal})=>{
+const AddHospitalForm:React.FC<Props>=({onSubmit, closeModal})=>{
     const [{diagnoses}] =useStateValue()
     return(
         <Formik initialValues={{
@@ -18,30 +18,39 @@ const AddHealthCheckForm:React.FC<Props>=({onSubmit, closeModal})=>{
             date: "",
             specialist: "",
             diagnosisCodes: [],
-            type: "HealthCheck",
-            healthCheckRating: 0
-        }} 
+            type: "Hospital",
+            discharge:{
+                date: "",
+                criteria: ""
+            }
+        }}
         onSubmit={onSubmit}
         validate={
             values=>{
-                const requiredError= "Field is required";
-                const errors: {[field: string]: string}={}
+                const requiredErrors ="Field is required";
+                const errors :{[field:string]:string}={}
                 if(!values.description){
-                    errors.name=requiredError;
+                    errors.description = requiredErrors
                 }
                 if(!values.date){
-                    errors.description =requiredError;
+                    errors.date = requiredErrors
                 }
                 if(!values.specialist){
-                    errors.specialist =requiredError;
+                    errors.specialist =requiredErrors
                 }
-                return errors;
+                if(!values.discharge.date){
+                    errors.discharge= requiredErrors
+                }
+                if(!values.discharge.criteria){
+                    errors.discharge =requiredErrors
+                }
+                return errors
             }}>
             {
                 ({isValid, dirty, setFieldValue, setFieldTouched})=>{
                     return(
                         <Form className="form ui">
-                             <Field
+                            <Field
                             label="Specialist"
                             placeholder="SPECIALIST"
                             name="specialist"
@@ -59,19 +68,24 @@ const AddHealthCheckForm:React.FC<Props>=({onSubmit, closeModal})=>{
                             name="description"
                             component={TextField}
                             />
-                             <Field
-                            label="Health Check Rating"
-                            name="healthCheckRating"
-                            component={NumberField}
-                            min={0}
-                            max={3}
-                            />
-                            <DiagnosisSelection
+                             <DiagnosisSelection
                             setFieldValue={setFieldValue}
                             setFieldTouched={setFieldTouched}
                             diagnoses={Object.values(diagnoses)}
                             />
-                            <Grid>
+                             <Field
+                            label="Discharge Date"
+                            placeholder= "YYYY-MM-DD"
+                            name="discharge.date"
+                            component={TextField}
+                            />
+                             <Field
+                            label="Criteria"
+                            placeholder= "CRITERIA"
+                            name="discharge.criteria"
+                            component={TextField}
+                            />
+                             <Grid>
                                 <Grid.Column floated="left" width={5}>
                                     <Button type="button" onClick={closeModal} color="red">Cancel</Button>
                                 </Grid.Column>
@@ -82,11 +96,13 @@ const AddHealthCheckForm:React.FC<Props>=({onSubmit, closeModal})=>{
                                 </Grid.Column>
                             </Grid>
                         </Form>
-                        
                     )
                 }
             }
+
         </Formik>
+        
     )
 }
-export default AddHealthCheckForm
+
+export default AddHospitalForm;

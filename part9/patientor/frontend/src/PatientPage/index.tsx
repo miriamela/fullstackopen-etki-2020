@@ -111,9 +111,9 @@ const PatientPage: React.FC=()=>{
         <div className="ui hidden divider"></div>
         <Button className="ui primary button" onClick={()=>openModalHealthCheck()}>Add Health Check Information</Button>
         <div className="ui hidden divider"></div>
-        <Button onClick={()=>openModalOccupational()}>Add Occupational Healthcare Information</Button>
+        <Button className="ui primary button" onClick={()=>openModalOccupational()}>Add Occupational Healthcare Information</Button>
         <div className="ui hidden divider"></div>
-        <Button onClick={()=>openModalHospital()}>Add Hospital Information</Button>
+        <Button className="ui primary button" onClick={()=>openModalHospital()}>Add Hospital Information</Button>
         </>
     )
 }

@@ -1,12 +1,13 @@
 import React from "react";
 import {Modal, Segment} from "semantic-ui-react";
 import {OccupationalHealthcareEntry} from "../types";
+import AddOccupationalHealthcareForm from "./AddOccupationalHealthcareForm";
 
 export type OccupationalHealthcareFormEntries = Omit<OccupationalHealthcareEntry, "id">
 interface Props {
     modalOpen:boolean;
     error?:string;
-    onSubmit: (values: OccupationalHealthcareEntry)=> void;
+    onSubmit: (values: OccupationalHealthcareFormEntries)=> void;
     closeModal : ()=> void;
 }
 
@@ -16,7 +17,7 @@ return(
         <Modal.Header>Add Occupational Healthcare Information</Modal.Header>
         <Modal.Content>
             {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
-            <h1>here the form</h1>
+            <AddOccupationalHealthcareForm onSubmit={onSubmit} closeModal={closeModal}/>
         </Modal.Content>
     </Modal>
 )

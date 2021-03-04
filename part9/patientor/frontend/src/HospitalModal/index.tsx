@@ -1,6 +1,7 @@
 import React from "react";
 import {HospitalEntry} from "../types";
 import {Modal, Segment} from "semantic-ui-react";
+import AddHospitalForm from "./AddHospitalForm";
 
 export type HospitalFormEntries = Omit<HospitalEntry, "id">
 
@@ -16,7 +17,8 @@ const HospitalModal:React.FC<Props>=({modalOpen, closeModal, error, onSubmit})=>
         <Modal open={modalOpen} onClose={closeModal} centred="false" closeIcon>
             <Modal.Header>Add Hospital Information</Modal.Header>
             <Modal.Content>
-                <h1>The form will go here</h1>
+                {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
+                <AddHospitalForm onSubmit={onSubmit} closeModal={closeModal}/>
             </Modal.Content>
         </Modal>
     )
