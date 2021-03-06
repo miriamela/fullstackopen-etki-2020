@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable semi */
+/* eslint-disable no-unused-vars */
 /* eslint-disable quotes */
 const express = require("express");
 const morgan = require("morgan");

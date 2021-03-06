@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 /* eslint-disable semi */
 /* eslint-disable quotes */
 const mongoose = require("mongoose");
