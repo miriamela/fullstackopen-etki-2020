@@ -1,5 +1,6 @@
 // import { ApolloServer } from "apollo-server";
 const { ApolloServer, gql } = require("apollo-server");
+const { v1: uuid } = require("uuid");
 
 let authors = [
   {
@@ -98,6 +99,14 @@ const typeDefs = gql`
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
   }
+  type Mutation {
+    addBook(
+      title: String!
+      author: String!
+      published: Int!
+      genres: [String!]!
+    ): Book
+  }
 `;
 const resolvers = {
   Query: {
@@ -108,12 +117,25 @@ const resolvers = {
         return books;
       }
       if (args.author) {
-        console.log(args);
         const authorBooks = books.filter((each) => each.author === args.author);
         return authorBooks;
       }
-      //   if (args.genre) {
-      //   }
+      if (args.genre) {
+        // NOT WORKING SOLUTION
+        // let booksByGenre = books.forEach((book) =>
+        //   book.genres.filter((genre) => genre === args.genre)
+        // );
+        // WORKING SOLUTION:
+        let booksByGenre = [];
+        for (let i = 0; i < books.length; i++) {
+          for (let j = 0; j < books[i].genres.length; j++) {
+            if (books[i].genres[j] === args.genre) {
+              booksByGenre.push(books[i]);
+            }
+          }
+        }
+        return booksByGenre;
+      }
     },
     allAuthors: () => authors,
   },
@@ -121,6 +143,22 @@ const resolvers = {
     bookCount: (root) => {
       let authorBooks = books.filter((each) => each.author === root.name);
       return authorBooks.length;
+    },
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      // console.log(args);
+      const book = { ...args, id: uuid() };
+      console.log(book.author);
+      const auth = authors.find((author) => author.name === book.author);
+      if (auth === undefined) {
+        const author = { name: book.author, id: uuid(), born: null };
+        console.log(author);
+        authors.concat(author);
+        console.log(authors);
+      }
+      books.concat(book);
+      return authors, book;
     },
   },
 };
