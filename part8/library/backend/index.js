@@ -148,15 +148,15 @@ const resolvers = {
   Mutation: {
     addBook: (root, args) => {
       const book = { ...args, id: uuid() };
-      console.log(book.author);
+      // console.log(book);
       const auth = authors.find((author) => author.name === book.author);
-      if (auth === undefined) {
+      if (!auth) {
         const author = { name: book.author, id: uuid(), born: null };
-        console.log(author);
-        authors.concat(author);
+        // console.log(author);
+        authors.push(author);
       }
-      books.concat(book);
-      return authors, book;
+      books.push(book);
+      return book;
     },
   },
 };
