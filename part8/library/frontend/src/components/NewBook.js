@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { ALL_AUTHORS, ALL_BOOKS, CREATE_BOOK } from "../queries";
 
 const NewBook = ({ show }) => {
   const [title, setTitle] = useState("");
@@ -6,6 +8,11 @@ const NewBook = ({ show }) => {
   const [published, setPublished] = useState("");
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
+  const [createNewBook] = useMutation(CREATE_BOOK, {
+    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+  });
+  // eslint-disable-next-line no-unused-expressions
+  // refetchQueries: [{ query: ALL_PERSONS }];
 
   if (!show) {
     return null;
@@ -16,9 +23,9 @@ const NewBook = ({ show }) => {
     setGenre("");
   };
 
-  const submit = (event) => {
-    event.preventDefault();
-
+  const submit = (ev) => {
+    ev.preventDefault();
+    createNewBook({ variables: { title, author, published, genres } });
     setTitle("");
     setPublished("");
     setAuthor("");
@@ -49,13 +56,13 @@ const NewBook = ({ show }) => {
           <input
             type="number"
             value={published}
-            onChange={({ target }) => setPublished(target.value)}
+            onChange={({ target }) => setPublished(Number(target.value))}
           />
         </div>
         <div>
           <input
             value={genre}
-            onChange={({ target }) => setGenre(target.genre)}
+            onChange={({ target }) => setGenre(target.value)}
           ></input>
           <button type="submit" onClick={addGenres}>
             Add new genre
