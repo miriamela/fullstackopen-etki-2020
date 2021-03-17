@@ -4,9 +4,10 @@ const mongoose = require("mongoose");
 const Author = require("./models/author");
 const Book = require("./models/book");
 const User = require("./models/user");
+require("dotenv").config();
 
-const MONGODB_URI =
-  "mongodb+srv://fullstack_3:hopingitworks@cluster0.0uhgn.mongodb.net/LibraryDatabase?retryWrites=true&w=majority";
+const MONGODB_URI = process.env.MONGODB_URI;
+
 mongoose
   .connect(MONGODB_URI, {
     useNewUrlParser: true,
