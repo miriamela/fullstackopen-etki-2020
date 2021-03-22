@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Books = ({ show, books, user }) => {
+const Books = ({ show, books }) => {
   const [selectedGenre, setSelectedGenre] = useState("allBooks");
   console.log(books);
 
@@ -56,7 +56,7 @@ const Books = ({ show, books, user }) => {
           {each}
         </button>
       ))}
-      <button onClick={() => setSelectedGenre("allBooks")}>all</button>
+      <button onClick={() => setSelectedGenre("allBooks")}>all genres</button>
     </>
   );
 };

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { useQuery } from "@apollo/client";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Login from "./components/LogIn";
 import Notify from "./components/Notify";
-import { ALL_AUTHORS, ALL_BOOKS, USER } from "./queries";
-import { useApolloClient } from "@apollo/client";
+import Recommended from "./components/Recommended";
+import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
+import { useApolloClient, useQuery } from "@apollo/client";
 
 function App() {
   const [page, setPage] = useState("authors");
@@ -15,8 +15,9 @@ function App() {
   const [error, setError] = useState(null);
   const resultAuthors = useQuery(ALL_AUTHORS);
   const resultBooks = useQuery(ALL_BOOKS);
-  const user = useQuery(USER);
+
   const client = useApolloClient();
+
   // console.log(resultBooks);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(token);
+  // console.log(token);
 
   if (resultAuthors.loading || resultBooks.loading) {
     return <h3>Loading... </h3>;
@@ -35,6 +36,7 @@ function App() {
 
   const authors = resultAuthors.data.allAuthors;
   const books = resultBooks.data.allBooks;
+  // const user = resultUser.data;
 
   const loggingOut = () => {
     setToken(null);
@@ -45,10 +47,13 @@ function App() {
   return (
     <div className="App">
       <nav>
-        <button onClick={() => setPage("authors")}>authors</button>
-        <button onClick={() => setPage("books")}>books</button>
+        <button onClick={() => setPage("authors")}>Authors</button>
+        <button onClick={() => setPage("books")}>Books</button>
         {token ? (
-          <button onClick={() => setPage("newBook")}>new book</button>
+          <button onClick={() => setPage("newBook")}>New Book</button>
+        ) : null}
+        {token ? (
+          <button onClick={() => setPage("recommended")}>Recommended</button>
         ) : null}
         {token ? (
           <button onClick={loggingOut}>Log Out</button>
@@ -59,8 +64,9 @@ function App() {
       <div>
         {error ? <Notify error={error} /> : null}
         <Authors authors={authors} show={page === "authors"} />
-        <Books user={user} books={books} show={page === "books"} />
+        <Books books={books} show={page === "books"} />
         <NewBook show={page === "newBook"} />
+        <Recommended show={page === "recommended"} />
         <Login
           setPage={setPage}
           setError={setError}

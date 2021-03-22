@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { ALL_AUTHORS, ALL_BOOKS, CREATE_BOOK } from "../queries";
+import {
+  ALL_AUTHORS,
+  ALL_BOOKS,
+  CREATE_BOOK,
+  RECOMMENDED_BOOKS,
+} from "../queries";
 
 const NewBook = ({ show }) => {
   const [title, setTitle] = useState("");
@@ -9,7 +14,14 @@ const NewBook = ({ show }) => {
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
   const [createNewBook] = useMutation(CREATE_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+    refetchQueries: [
+      { query: ALL_BOOKS },
+      { query: ALL_AUTHORS },
+      {
+        RECOMMENDED_BOOKS,
+        variables: { genre: "favoriteGenre" },
+      },
+    ],
   });
   // eslint-disable-next-line no-unused-expressions
   // refetchQueries: [{ query: ALL_PERSONS }];

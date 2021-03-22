@@ -20,6 +20,18 @@ export const ALL_BOOKS = gql`
     }
   }
 `;
+export const RECOMMENDED_BOOKS = gql`
+  query recommended($genre: String!) {
+    allBooks(genre: $genre) {
+      title
+      author {
+        name
+      }
+      published
+      genres
+    }
+  }
+`;
 export const CREATE_BOOK = gql`
   mutation createNewBook(
     $title: String!
