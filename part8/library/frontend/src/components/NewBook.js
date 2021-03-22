@@ -19,7 +19,7 @@ const NewBook = ({ show }) => {
       { query: ALL_AUTHORS },
       {
         RECOMMENDED_BOOKS,
-        variables: { genre: "favoriteGenre" },
+        variables: { genre: "apollographql/apollo-client" },
       },
     ],
   });
