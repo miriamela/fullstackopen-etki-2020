@@ -13,18 +13,18 @@ const NewBook = ({ show }) => {
   const [published, setPublished] = useState("");
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
+
+  const recommendationQueries = genres.map((genre) => ({
+    RECOMMENDED_BOOKS,
+    variables: { genre },
+  }));
   const [createNewBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [
       { query: ALL_BOOKS },
       { query: ALL_AUTHORS },
-      {
-        RECOMMENDED_BOOKS,
-        variables: { genre: "apollographql/apollo-client" },
-      },
+      recommendationQueries,
     ],
   });
-  // eslint-disable-next-line no-unused-expressions
-  // refetchQueries: [{ query: ALL_PERSONS }];
 
   if (!show) {
     return null;
