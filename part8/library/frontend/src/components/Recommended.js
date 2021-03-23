@@ -6,7 +6,6 @@ const Recommended = ({ show }) => {
   const [userGenre, setUserGenre] = useState("");
   const [recommended, { data }] = useLazyQuery(RECOMMENDED_BOOKS);
   const user = useQuery(USER);
-  console.log(user);
 
   useEffect(() => {
     if (user.loading) {
@@ -17,15 +16,6 @@ const Recommended = ({ show }) => {
       recommended({ variables: { genre: userGenre } });
     }
   }, [user, userGenre, recommended]);
-  console.log(data);
-
-  // const selectedBooks = (books, user) => {
-  //   if (user) {
-  //     return books.filter((each) =>
-  //       each.genres.includes(user.me.favoriteGenre)
-  //     );
-  //   }
-  // };
 
   if (!show) {
     return null;
@@ -47,7 +37,7 @@ const Recommended = ({ show }) => {
         </thead>
         <tbody>
           {data.allBooks.map((each) => (
-            <tr key={each.title}>
+            <tr key={each.id}>
               <td>{each.title}</td>
               <td>{each.author.name}</td>
               <td>{each.published}</td>

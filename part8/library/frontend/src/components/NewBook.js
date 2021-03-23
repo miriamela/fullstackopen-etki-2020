@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import {
   ALL_AUTHORS,
-  ALL_BOOKS,
+  // ALL_BOOKS,
   CREATE_BOOK,
   RECOMMENDED_BOOKS,
 } from "../queries";
@@ -15,14 +15,14 @@ const NewBook = ({ show }) => {
   const [genres, setGenres] = useState([]);
 
   const recommendationQueries = genres.map((genre) => ({
-    RECOMMENDED_BOOKS,
+    query: RECOMMENDED_BOOKS,
     variables: { genre },
   }));
   const [createNewBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [
-      { query: ALL_BOOKS },
+      // { query: ALL_BOOKS },
       { query: ALL_AUTHORS },
-      recommendationQueries,
+      ...recommendationQueries,
     ],
   });
 
@@ -31,7 +31,7 @@ const NewBook = ({ show }) => {
   }
   const addGenres = (ev) => {
     ev.preventDefault();
-    setGenres(genres.concat(genre));
+    setGenres(genres.concat(genre.toLowerCase()));
     setGenre("");
   };
 

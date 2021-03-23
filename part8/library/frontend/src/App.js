@@ -6,8 +6,8 @@ import NewBook from "./components/NewBook";
 import Login from "./components/LogIn";
 import Notify from "./components/Notify";
 import Recommended from "./components/Recommended";
-import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
-import { useApolloClient, useQuery } from "@apollo/client";
+import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED } from "./queries";
+import { useApolloClient, useQuery, useSubscription } from "@apollo/client";
 
 function App() {
   const [page, setPage] = useState("authors");
@@ -18,7 +18,28 @@ function App() {
 
   const client = useApolloClient();
 
-  // console.log(resultBooks);
+  const updateCacheWith = (addedBook) => {
+    // console.log(addedBook);
+    const includedIn = (set, object) =>
+      set.map((book) => book.id).includes(object.id);
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS });
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) },
+      });
+    }
+    // console.log(dataInStore.allBooks);
+  };
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded;
+      window.alert(`${addedBook.title} added`);
+      updateCacheWith(addedBook);
+      // console.log(addedBook);
+    },
+  });
 
   useEffect(() => {
     const tokenSaved = localStorage.getItem("user-token");
@@ -28,7 +49,6 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // console.log(token);
 
   if (resultAuthors.loading || resultBooks.loading) {
     return <h3>Loading... </h3>;
@@ -36,7 +56,6 @@ function App() {
 
   const authors = resultAuthors.data.allAuthors;
   const books = resultBooks.data.allBooks;
-  // const user = resultUser.data;
 
   const loggingOut = () => {
     setToken(null);

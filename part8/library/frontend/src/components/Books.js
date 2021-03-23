@@ -43,7 +43,7 @@ const Books = ({ show, books }) => {
             <th>publisher</th>
           </tr>
           {booksByGenre(selectedGenre).map((each) => (
-            <tr key={each.title}>
+            <tr key={each.id}>
               <td>{each.title}</td>
               <td>{each.author.name}</td>
               <td>{each.published}</td>

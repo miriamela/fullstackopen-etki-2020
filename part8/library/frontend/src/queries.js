@@ -17,6 +17,7 @@ export const ALL_BOOKS = gql`
       }
       published
       genres
+      id
     }
   }
 `;
@@ -29,6 +30,7 @@ export const RECOMMENDED_BOOKS = gql`
       }
       published
       genres
+      id
     }
   }
 `;
@@ -74,6 +76,18 @@ export const USER = gql`
     me {
       username
       favoriteGenre
+    }
+  }
+`;
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      title
+      author {
+        name
+      }
+      genres
+      id
     }
   }
 `;
