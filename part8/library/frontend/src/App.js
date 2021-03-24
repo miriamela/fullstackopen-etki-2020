@@ -19,7 +19,6 @@ function App() {
   const client = useApolloClient();
 
   const updateCacheWith = (addedBook) => {
-    // console.log(addedBook);
     const includedIn = (set, object) =>
       set.map((book) => book.id).includes(object.id);
 
@@ -30,20 +29,17 @@ function App() {
         data: { allBooks: dataInStore.allBooks.concat(addedBook) },
       });
     }
-    // console.log(dataInStore.allBooks);
   };
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
       const addedBook = subscriptionData.data.bookAdded;
       window.alert(`${addedBook.title} added`);
       updateCacheWith(addedBook);
-      // console.log(addedBook);
     },
   });
 
   useEffect(() => {
     const tokenSaved = localStorage.getItem("user-token");
-    console.log(tokenSaved);
     if (tokenSaved) {
       setToken(tokenSaved);
     }

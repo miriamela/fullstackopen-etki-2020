@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 const Books = ({ show, books }) => {
   const [selectedGenre, setSelectedGenre] = useState("allBooks");
-  console.log(books);
 
   let genres = [];
 
@@ -17,8 +16,6 @@ const Books = ({ show, books }) => {
     genres = Array.from(new Set([...genres]));
   };
   totalGenres();
-
-  console.log(genres);
 
   if (!show) {
     return null;

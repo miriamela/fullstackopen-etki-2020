@@ -17,7 +17,6 @@ const LogIn = ({ setToken, show, setError, setPage }) => {
   useEffect(() => {
     if (result.data) {
       const token = result.data.login.value;
-      console.log(token);
       localStorage.setItem("user-token", token);
       setToken(token);
       setPage("authors");
@@ -29,7 +28,6 @@ const LogIn = ({ setToken, show, setError, setPage }) => {
   }
   const submit = async (ev) => {
     ev.preventDefault();
-    console.log("click");
     login({ variables: { username, password } });
     setUsername("");
     setPassword("");

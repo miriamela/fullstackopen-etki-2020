@@ -8,8 +8,7 @@ const AddBirthDate = ({ authors }) => {
   const [updateBirthYear] = useMutation(ADD_BIRTH_YEAR, {
     refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }],
   });
-  console.log(authors);
-  console.log(name);
+
   const submit = (ev) => {
     ev.preventDefault();
     updateBirthYear({ variables: { name, born } });

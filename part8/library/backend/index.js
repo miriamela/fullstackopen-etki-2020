@@ -97,7 +97,6 @@ const resolvers = {
       }
       if (args.genre) {
         // let booksByGenre = [];
-        let booksByGenre = await Book.find({ genres: { $in: [args.genre] } });
         // for (let i = 0; i < books.length; i++) {
         //   for (let j = 0; j < books[i].genres.length; j++) {
         //     if (books[i].genres[j] === args.genre) {
@@ -105,6 +104,7 @@ const resolvers = {
         //     }
         //   }
         // }
+        let booksByGenre = await Book.find({ genres: { $in: [args.genre] } });
         return booksByGenre;
       }
     },
@@ -115,12 +115,12 @@ const resolvers = {
       return context.currentUser;
     },
   },
-  Author: {
-    bookCount: async (root) => {
-      let authorBooks = await Book.find({ author: root.id });
-      return authorBooks.length;
-    },
-  },
+  // Author: {
+  //   bookCount: async (root) => {
+  //     let authorBooks = await Book.find({ author: root.id });
+  //     return authorBooks.length;
+  //   },
+  // },
   Book: {
     author: async (root) => {
       try {
@@ -141,7 +141,10 @@ const resolvers = {
       if (!author) {
         author = new Author({
           name: args.author,
+          bookCount: 1,
         });
+      } else {
+        author.bookCount = author.bookCount + 1;
       }
       const book = new Book({
         title: args.title,
