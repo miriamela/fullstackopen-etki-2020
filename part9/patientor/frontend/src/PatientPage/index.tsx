@@ -23,7 +23,6 @@ const PatientPage: React.FC=()=>{
     const [modalOpenHospital, setModalOpenHospital] =React.useState<boolean>(false)
     const [error, setError] = React.useState<string | undefined>();
 
-    // console.log(id)
    const openModalHealthCheck=(): void=>{
        setModalOpenHealthCheck(true)
    }
@@ -75,8 +74,7 @@ const PatientPage: React.FC=()=>{
         }
        fetchPatient()
     }, [dispatch, id.id])
-  
-    // console.log(patient);
+
    const showIcon = (gender: string): "mars"| "venus"|"genderless"=>{
     if (gender==="male"){
         return "mars"
