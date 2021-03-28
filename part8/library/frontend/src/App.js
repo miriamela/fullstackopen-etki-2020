@@ -15,6 +15,7 @@ function App() {
   const [error, setError] = useState(null);
   const resultAuthors = useQuery(ALL_AUTHORS);
   const resultBooks = useQuery(ALL_BOOKS);
+  // const [callUser, {loading, data}]=useLazyQuery(USER)
 
   const client = useApolloClient();
 
@@ -57,8 +58,9 @@ function App() {
     setToken(null);
     localStorage.clear();
     client.resetStore();
+    setPage("authors")
   };
-
+  
   return (
     <div className="App">
       <nav>
@@ -68,7 +70,7 @@ function App() {
           <button onClick={() => setPage("newBook")}>New Book</button>
         ) : null}
         {token ? (
-          <button onClick={() => setPage("recommended")}>Recommended</button>
+          <button onClick={()=>setPage("recommended")}>Recommended</button>
         ) : null}
         {token ? (
           <button onClick={loggingOut}>Log Out</button>

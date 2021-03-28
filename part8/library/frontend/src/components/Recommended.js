@@ -2,23 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { RECOMMENDED_BOOKS, USER } from "../queries";
 
-const Recommended = ({ show }) => {
-  const [userGenre, setUserGenre] = useState("");
-  const [recommended, { data }] = useLazyQuery(RECOMMENDED_BOOKS);
-  const user = useQuery(USER);
-
+const Recommended = ({ show}) => {
+  const [userGenre, setUserGenre]=useState(null)
+  const user=useQuery(USER)
+  const [setBooks, {data}] =useLazyQuery(RECOMMENDED_BOOKS)
+  console.log(user)
+  
   useEffect(() => {
-    if (user.loading) {
-      return <h3>loading</h3>;
+    if(!user.loading && user.data.me !== null){
+      setUserGenre(user.data.me.favoriteGenre)
     }
-    if (!user.loading) {
-      setUserGenre(user.data.me.favoriteGenre);
-      recommended({ variables: { genre: userGenre } });
-    }
-  }, [user, userGenre, recommended]);
-
-  if (!show) {
-    return null;
+    setBooks({variables:{genre: userGenre}})
+  }, [user, userGenre, setBooks])
+ 
+// console.log(data)
+  
+  if (!show || !data){
+    return null
   }
 
   return (
